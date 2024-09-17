@@ -1,74 +1,44 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Box, useTheme } from "@mui/material";
 import Title from "../../../components/Title";
 import { ResponsiveLine } from "@nivo/line";
 import { useGetSalesQuery } from "../../../redux/API/api";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
-const Daily: React.FC = () => {
- const [startDate, setStartDate] = useState<Date>(new Date("2021-02-01"));
- const [endDate, setEndDate] = useState<Date>(new Date("2021-03-01"));
+const Monthly = () => {
  const { data } = useGetSalesQuery(undefined);
  const theme = useTheme();
 
  const [formattedData] = useMemo(() => {
   if (!data) return [];
 
-  const { dailyData } = data;
+  const { monthlyData } = data;
   const totalSalesLine = {
    id: "totalSales",
    color: theme.palette.secondary.main,
-   data: [] as { x: string; y: number }[],
+   data: [],
   };
   const totalUnitsLine = {
    id: "totalUnits",
    color: theme.palette.primary.main,
-   data: [] as { x: string; y: number }[],
+   data: [],
   };
 
-  dailyData.forEach(
-   ({ date, totalSales, totalUnits }: { date: any; totalSales: number; totalUnits: number }) => {
-    const dateFormatted = new Date(date);
-    if (dateFormatted >= startDate && dateFormatted <= endDate) {
-     const splitDate = date.substring(date.indexOf("-") + 1);
-
-     totalSalesLine.data.push({ x: splitDate, y: totalSales });
-     totalUnitsLine.data.push({ x: splitDate, y: totalUnits });
-    }
+  Object.values(monthlyData).forEach(
+   ({ month, totalSales, totalUnits }: { date: any; totalSales: number; totalUnits: number }) => {
+    totalSalesLine.data = [...totalSalesLine.data, { x: month, y: totalSales }];
+    totalUnitsLine.data = [...totalUnitsLine.data, { x: month, y: totalUnits }];
    },
   );
 
-  return [[totalSalesLine, totalUnitsLine]];
- }, [data, startDate, endDate, theme]);
+  const formattedData = [totalSalesLine, totalUnitsLine];
+  return [formattedData];
+ }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
  return (
   <Box m="1.5rem 2.5rem">
-   <Title title="DAILY SALES" subtitle="Chart of daily sales" />
+   <Title title="MONTHLY SALES" subtitle="Chart of monthlysales" />
    <Box height="75vh">
-    <Box display="flex" justifyContent="flex-end">
-     <Box>
-      <DatePicker
-       selected={startDate}
-       onChange={(date) => setStartDate(date as Date)}
-       selectsStart
-       startDate={startDate}
-       endDate={endDate}
-      />
-     </Box>
-     <Box>
-      <DatePicker
-       selected={endDate}
-       onChange={(date) => setEndDate(date as Date)}
-       selectsEnd
-       startDate={startDate}
-       endDate={endDate}
-       minDate={startDate}
-      />
-     </Box>
-    </Box>
-
     {data ? (
      <ResponsiveLine
       data={formattedData}
@@ -102,11 +72,11 @@ const Daily: React.FC = () => {
        tooltip: {
         container: {
          color: theme.palette.primary.main,
-         backgroundColor: theme.palette.background.paper,
         },
        },
       }}
       margin={{ top: 50, right: 50, bottom: 70, left: 60 }}
+      xScale={{ type: "point" }}
       yScale={{
        type: "linear",
        min: "auto",
@@ -115,7 +85,7 @@ const Daily: React.FC = () => {
        reverse: false,
       }}
       yFormat=" >-.2f"
-      curve="catmullRom"
+      // curve="catmullRom"
       axisTop={null}
       axisRight={null}
       axisBottom={{
@@ -138,6 +108,11 @@ const Daily: React.FC = () => {
       }}
       enableGridX={false}
       enableGridY={false}
+      pointSize={10}
+      pointColor={{ theme: "background" }}
+      pointBorderWidth={2}
+      pointBorderColor={{ from: "serieColor" }}
+      pointLabelYOffset={-12}
       useMesh={true}
       legends={[
        {
@@ -174,4 +149,4 @@ const Daily: React.FC = () => {
  );
 };
 
-export default Daily;
+export default Monthly;

@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:19.8.1
 WORKDIR /dockerFile
 COPY package.json .
 RUN npm install 
