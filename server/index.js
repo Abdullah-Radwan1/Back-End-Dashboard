@@ -4,9 +4,14 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import morgan from "morgan";
+// import routes
 import generalRoutes from "./routes/general.js";
 import clientRoutes from "./routes/client.js";
 import salesRoutes from "./routes/sales.js";
+import managementRoutes from "./routes/management.js";
+//
+import AffiliateStat from "./models/affiliateStat.js";
+import { dataAffiliateStat } from "../server/data/data.js";
 // Load environment variables from .env file
 dotenv.config();
 const PORT = process.env.PORT || 3000; // Fallback to port 3000 if PORT is not set
@@ -21,12 +26,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/general", generalRoutes);
 app.use("/client", clientRoutes);
 app.use("/sales", salesRoutes);
+app.use("/management", managementRoutes);
 // MongoDB connection
 mongoose
  .connect(process.env.MONGO_URL)
  .then(async () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () => {
+   //    AffiliateStat.insertMany(dataAffiliateStat);
    console.log(`Server is running on port ${PORT}`);
   });
  })
