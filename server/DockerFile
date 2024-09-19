@@ -1,5 +1,5 @@
 FROM node:19.8.1
-WORKDIR /dockerFile
+WORKDIR /dockerFolder
 COPY package.json .
 RUN npm install 
 COPY . .

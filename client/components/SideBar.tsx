@@ -14,6 +14,7 @@ import {
  Box,
  Drawer,
  Divider,
+ Icon,
 } from "@mui/material";
 import { ChevronLeft } from "@mui/icons-material";
 import Image from "next/image";
@@ -32,10 +33,10 @@ const SideBar = ({
  drawerWidth: string;
  data: user;
 }) => {
- const [active, setActive] = useState("");
  const router = useRouter();
  const pathName = usePathname();
  const theme = useTheme();
+ console.log(pathName);
  console.log(data);
  return (
   <Box>
@@ -68,34 +69,6 @@ const SideBar = ({
      }}
     >
      <Box>
-      <Box my={"2rem"} display="flex" alignItems="center" justifyContent={"center"} gap={4}>
-       <section className="flex items-center gap-5">
-        <Image
-         width={40}
-         height={40}
-         src={"/241373641_887265995553345_4026210723519995756_n.jpg"}
-         alt=""
-         className="rounded-full"
-        />
-        <div>
-         <Typography variant="h6" color={theme.palette.text.primary}>
-          {data?.name}
-         </Typography>
-         <Typography variant="subtitle2" color={theme.palette.text.secondary}>
-          {data?.role}
-         </Typography>
-        </div>
-       </section>
-       {!isNonMobile && (
-        <IconButton
-         onClick={() => setIsSideBarOpen(!isSideBarOpen)}
-         sx={{ alignSelf: "flex-end", color: theme.palette.text.primary }}
-        >
-         <ChevronLeft />
-        </IconButton>
-       )}
-      </Box>
-      <Divider sx={{ backgroundColor: theme.palette.neutral.main }} />
       <List>
        {navItems.map(({ text, icon }) => {
         if (!icon) {
@@ -103,7 +76,6 @@ const SideBar = ({
           <Typography
            sx={{ p: "2.25rem 0 1rem 2.6rem", fontWeight: "bolder", fontSize: "1.1rem" }}
            key={text}
-           color={theme.palette.text.primary}
           >
            {text}
           </Typography>
@@ -113,35 +85,70 @@ const SideBar = ({
         return (
          <ListItem
           sx={{
-           backgroundColor: active === lcText ? theme.palette.background.default : "transparent",
+           backgroundColor: pathName === `/${lcText}` ? theme.palette.action.active : "transparent", // Changes background when path matches
           }}
           key={text}
           disablePadding
          >
           <ListItemButton
+           className="flex justify-start gap-4 items-center "
            sx={{
+            display: "flex",
+            justifyItems: "center",
             pl: 5,
-            backgroundColor: active === lcText ? theme.palette.primary.main : "transparent",
-            color: active === lcText ? theme.palette.text.secondary : theme.palette.primary.main,
+            backgroundColor:
+             pathName === `/${lcText}` ? theme.palette.background.main : "transparent", // Changes button background color
+            color:
+             pathName === `/${lcText}` ? theme.palette.text.contrast : theme.palette.text.primary, // Text color based on active state
            }}
            onClick={() => {
             router.push(`/${lcText}`);
-            setActive(lcText);
            }}
           >
-           <ListItemIcon
+           <IconButton
             sx={{
-             color: active === lcText ? theme.palette.text.secondary : theme.palette.text.primary,
+             color:
+              pathName === `/${lcText}` ? theme.palette.text.contrast : theme.palette.text.primary, // Dynamic icon color based on active state
             }}
            >
             {icon}
-           </ListItemIcon>
-           <ListItemText primary={text} />
+           </IconButton>
+
+           <h2>{text}</h2>
           </ListItemButton>
          </ListItem>
         );
        })}
       </List>
+     </Box>
+     <Divider sx={{ backgroundColor: theme.palette.divider }} />
+
+     <Box my={"2rem"} display="flex" alignItems="center" justifyContent={"center"} gap={4}>
+      <section className="flex items-center gap-5">
+       <Image
+        width={40}
+        height={40}
+        src={"/241373641_887265995553345_4026210723519995756_n.jpg"}
+        alt=""
+        className="rounded-full"
+       />
+       <div>
+        <Typography variant="h6" color={theme.palette.text.primary}>
+         {data?.name}
+        </Typography>
+        <Typography variant="subtitle2" color={theme.palette.text.secondary}>
+         {data?.role}
+        </Typography>
+       </div>
+      </section>
+      {!isNonMobile && (
+       <IconButton
+        onClick={() => setIsSideBarOpen(!isSideBarOpen)}
+        sx={{ alignSelf: "flex-end", color: theme.palette.text.primary }}
+       >
+        <ChevronLeft />
+       </IconButton>
+      )}
      </Box>
     </Drawer>
    )}

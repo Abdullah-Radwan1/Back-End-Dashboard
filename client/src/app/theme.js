@@ -11,13 +11,14 @@ export const lightTheme = createTheme({
   },
   background: {
    default: "#fcfcfc",
-   paper: "#f2f2f2",
-   main: "#ffffff",
+   paper: "#E6E6E6",
+   main: "#9e9e9e",
   },
   text: {
    primary: "#141414",
    secondary: "#292929",
-   yellow: "#f0c808", // Adjusted yellow.
+   yellow: "#f0c808", // Adjusted yellow
+   contrast: "#000000",
   },
   neutral: {
    dark: "#9a9a9a", // Adjusted.
@@ -45,11 +46,11 @@ export const darkTheme = createTheme({
   background: {
    default: "#141b2d",
    paper: "#1F2A40",
-   main: "#000000",
+   main: "#f2f2f2",
   },
   text: {
    primary: "#e0e0e0",
-   secondary: "#b3b3b3", // Adjusted secondary text for better readability.
+   contrast: "#000000", // Adjusted secondary text for better readability.
    green: "#4cceac",
    yellow: "#fcfcfc", // Fixed missing #.
   },

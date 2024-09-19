@@ -3,7 +3,17 @@ console.log(process.env.REACT_APP_BASE_URL);
 export const api = createApi({
  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5001" }),
  reducerPath: "adminApi",
- tagTypes: ["User", "products", "customers", "Transactions", "geography", "sales", "admins"],
+ tagTypes: [
+  "User",
+  "products",
+  "customers",
+  "Transactions",
+  "geography",
+  "sales",
+  "admins",
+  "performance",
+  "dashboard",
+ ],
  endpoints: (builder) => ({
   getUser: builder.query({
    query: (id) => `general/user/${id}`,
@@ -37,6 +47,14 @@ export const api = createApi({
    query: () => "management/admins",
    providesTags: ["admins"],
   }),
+  getPerformance: builder.query({
+   query: (id) => `management/performance/${id}`,
+   providesTags: ["performance"],
+  }),
+  getDashboard: builder.query({
+   query: () => `general/Dashboard`,
+   providesTags: ["dashboard"],
+  }),
  }),
 });
 
@@ -48,4 +66,6 @@ export const {
  useGetGeographyQuery,
  useGetSalesQuery,
  useGetAdminsQuery,
+ useGetPerformanceQuery,
+ useGetDashboardQuery,
 } = api;

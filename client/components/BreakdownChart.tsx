@@ -12,8 +12,8 @@ const BreakdownChart = ({ isDashboard = false }) => {
  console.log(data);
  const colors = [
   theme.palette.warning.dark,
-  theme.palette.background.paper,
-  theme.palette.primary.dark,
+  theme.palette.secondary.dark,
+  theme.palette.secondary.main,
   theme.palette.warning.light,
  ];
  const formattedData = Object.entries(data.salesByCategory).map(([category, sales], i) => ({
@@ -121,11 +121,10 @@ const BreakdownChart = ({ isDashboard = false }) => {
     position="absolute"
     top="50%"
     left="50%"
-    color={theme.palette.primary.main}
     textAlign="center"
-    pointerEvents="none"
     sx={{
      transform: isDashboard ? "translate(-75%, -170%)" : "translate(-50%, -100%)",
+     color: theme.palette.primary.main,
     }}
    >
     <Typography variant="h6">
