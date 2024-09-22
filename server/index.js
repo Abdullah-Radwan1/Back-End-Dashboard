@@ -12,21 +12,33 @@ import managementRoutes from "./routes/management.js";
 //
 import AffiliateStat from "./models/affiliateStat.js";
 import { dataAffiliateStat } from "../server/data/data.js";
+
 // Load environment variables from .env file
 dotenv.config();
 const PORT = process.env.PORT || 3000; // Fallback to port 3000 if PORT is not set
 const app = express();
+
+// CORS configuration
+app.use(
+ cors({
+  origin: "https://back-end-dashboard-front-git-main-abdallahs-projects-35c1f72a.vercel.app", // Your frontend URL
+  methods: "GET,POST,PUT,DELETE", // Allowed methods
+  credentials: true, // Allow cookies if needed
+ }),
+);
+
 // Middlewares
-app.use(cors());
 app.use(express.json());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(express.urlencoded({ extended: false }));
-// routes
+
+// Routes
 app.use("/general", generalRoutes);
 app.use("/client", clientRoutes);
 app.use("/sales", salesRoutes);
 app.use("/management", managementRoutes);
+
 // MongoDB connection
 mongoose
  .connect(process.env.MONGO_URL)
