@@ -60,6 +60,7 @@ const NavBar = ({
     </IconButton>
     <IconButton
      onClick={() => {
+      //@ts-ignore
       dispatch(toggleMode("dark"));
      }}
     >

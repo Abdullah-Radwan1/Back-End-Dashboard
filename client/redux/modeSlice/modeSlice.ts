@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState: { mode: string; userId: string } = {
+// Define the mode type as a union of string literals
+type Mode = "light" | "dark";
+
+const initialState: { mode: Mode; userId: string } = {
  mode: "dark",
  userId: "63701cc1f03239b7f700000e",
 };
