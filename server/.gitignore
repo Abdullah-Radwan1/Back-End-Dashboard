@@ -7,7 +7,7 @@
 /Full-Stack.mp4
 # testing
 /coverage
-
+.env
 # production
 /build
 
