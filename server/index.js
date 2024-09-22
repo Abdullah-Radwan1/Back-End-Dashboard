@@ -1,6 +1,6 @@
 import express from "express";
 import helmet from "helmet";
-import cors from "cors";
+
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import morgan from "morgan";
@@ -19,13 +19,6 @@ const PORT = process.env.PORT || 3000; // Fallback to port 3000 if PORT is not s
 const app = express();
 
 // CORS configuration
-app.use(
- cors({
-  origin: "https://back-end-dashboard-front-git-main-abdallahs-projects-35c1f72a.vercel.app", // Your frontend URL
-  methods: "GET,POST,PUT,DELETE", // Allowed methods
-  credentials: true, // Allow cookies if needed
- }),
-);
 
 // Middlewares
 app.use(express.json());
