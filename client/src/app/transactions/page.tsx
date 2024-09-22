@@ -55,29 +55,20 @@ const Page = () => {
    >
     {/* Pass the custom toolbar to the DataGrid */}
     <DataGrid
-     components={{
-      Toolbar: DataGridCustomToolbar, // Attach custom toolbar
-     }}
-     componentsProps={{
-      toolbar: {
-       searchInput,
-       setSearch,
-       setSearchInput,
-      },
-     }}
      loading={isLoading || !data}
      getRowId={(row) => row._id}
      rows={data?.transactions || []}
      columns={transColumns}
      rowCount={data?.total || 0}
+     //@ts-ignore
      rowsPerPageOptions={[20, 50, 100]}
      pagination
      page={page}
      pageSize={pageSize}
      paginationMode="server"
      sortingMode="server"
-     onPageChange={(newPage) => setPage(newPage)}
-     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+     onPageChange={(newPage: number) => setPage(newPage)}
+     onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
      onSortModelChange={(newSortModel) => {
       if (newSortModel.length > 0) {
        const { field, sort } = newSortModel[0];

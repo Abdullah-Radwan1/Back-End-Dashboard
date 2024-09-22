@@ -70,6 +70,7 @@ const Daily: React.FC = () => {
     </Box>
 
     {data ? (
+     //@ts-ignore
      <ResponsiveLine
       data={formattedData}
       theme={{

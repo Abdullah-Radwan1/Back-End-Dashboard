@@ -1,7 +1,0 @@
-version:'3'
-services : 
-node-app : 
-conntainer_name : express-node-app-container
-build: .
-volumes : -/src:/dockerFolder/src:ro 
-ports: -"3000:3000"

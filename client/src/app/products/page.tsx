@@ -14,9 +14,9 @@ import {
 } from "@mui/material";
 import Title from "../../../components/Title";
 import { useGetProductsQuery } from "../../../redux/API/api";
-import type { product } from "../../../types/userT";
+import type { Product, Stat } from "../../../types/userT";
 
-const Product = ({ _id, name, description, price, rating, category, supply, stat }: product) => {
+const Product = ({ _id, name, description, price, rating, category, supply, stat }: Product) => {
  const theme = useTheme();
  const [isExpanded, setIsExpanded] = useState(false);
 
@@ -58,8 +58,12 @@ const Product = ({ _id, name, description, price, rating, category, supply, stat
     <CardContent>
      <Typography>id: {_id}</Typography>
      <Typography>Supply Left: {supply}</Typography>
-     <Typography>Yearly Sales This Year: {stat.yearlySalesTotal}</Typography>
-     <Typography>Yearly Units Sold This Year: {stat.yearlyTotalSoldUnits}</Typography>
+     {stat.map((statItem: Stat, index: number) => (
+      <Box key={index} mt={2}>
+       <Typography>Yearly Sales This Year: {statItem.yearlySalesTotal}</Typography>
+       <Typography>Yearly Units Sold This Year: {statItem.yearlyTotalSoldUnits}</Typography>
+      </Box>
+     ))}
     </CardContent>
    </Collapse>
   </Card>
@@ -85,7 +89,7 @@ const Products = () => {
       "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
      }}
     >
-     {data.map(({ _id, name, description, price, rating, category, supply, stat }: product) => (
+     {data.map(({ _id, name, description, price, rating, category, supply, stat }: Product) => (
       <Product
        key={_id}
        _id={_id}
@@ -95,7 +99,7 @@ const Products = () => {
        rating={rating}
        category={category}
        supply={supply}
-       stat={stat}
+       stat={stat} // stat is passed as a prop here
       />
      ))}
     </Box>

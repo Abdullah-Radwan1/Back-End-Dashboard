@@ -1,11 +1,18 @@
 "use client";
 import React, { useState } from "react";
-import { FormControl, MenuItem, InputLabel, Box, Select } from "@mui/material";
+import { FormControl, MenuItem, InputLabel, Box, Select, SelectChangeEvent } from "@mui/material";
 import Title from "../../../components/Title";
 import OverviewChart from "../../../components/OverviewChart";
 
-const Overview = () => {
- const [view, setView] = useState("units");
+// Define the view types
+type ViewType = "sales" | "units";
+
+const Overview: React.FC = () => {
+ const [view, setView] = useState<ViewType>("units");
+
+ const handleViewChange = (e: SelectChangeEvent) => {
+  setView(e.target.value as ViewType); // Type assertion to "sales" | "units"
+ };
 
  return (
   <Box m="1.5rem 2.5rem">
@@ -13,7 +20,7 @@ const Overview = () => {
    <Box height="75vh">
     <FormControl sx={{ mt: "1rem" }}>
      <InputLabel>View</InputLabel>
-     <Select value={view} label="View" onChange={(e) => setView(e.target.value)}>
+     <Select value={view} label="View" onChange={handleViewChange}>
       <MenuItem value="sales">Sales</MenuItem>
       <MenuItem value="units">Units</MenuItem>
      </Select>

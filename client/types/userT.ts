@@ -2,7 +2,12 @@ export type user = {
  name: string;
  role: string;
 };
-export type product = {
+export type Stat = {
+ yearlySalesTotal: any;
+ yearlyTotalSoldUnits: number;
+};
+
+export type Product = {
  _id: number;
  name: string;
  description: string;
@@ -10,5 +15,5 @@ export type product = {
  rating: number;
  category: string;
  supply: string;
- stat: string;
+ stat: Stat[];
 };

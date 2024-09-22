@@ -2,46 +2,58 @@
 import React, { useMemo } from "react";
 import { Box, useTheme } from "@mui/material";
 import Title from "../../../components/Title";
-import { ResponsiveLine } from "@nivo/line";
+import { ResponsiveLine, Serie } from "@nivo/line";
 import { useGetSalesQuery } from "../../../redux/API/api";
 
-const Monthly = () => {
+interface SalesData {
+ month: string;
+ totalSales: number;
+ totalUnits: number;
+}
+
+interface LineData {
+ id: string;
+ color: string;
+ data: { x: string; y: number }[];
+}
+
+const Monthly: React.FC = () => {
  const { data } = useGetSalesQuery(undefined);
  const theme = useTheme();
 
  const [formattedData] = useMemo(() => {
-  if (!data) return [];
+  if (!data) return [[]];
 
-  const { monthlyData } = data;
-  const totalSalesLine = {
+  const { monthlyData }: { monthlyData: SalesData[] } = data;
+
+  const totalSalesLine: LineData = {
    id: "totalSales",
    color: theme.palette.secondary.main,
    data: [],
   };
-  const totalUnitsLine = {
+
+  const totalUnitsLine: LineData = {
    id: "totalUnits",
    color: theme.palette.primary.main,
    data: [],
   };
 
-  Object.values(monthlyData).forEach(
-   ({ month, totalSales, totalUnits }: { date: any; totalSales: number; totalUnits: number }) => {
-    totalSalesLine.data = [...totalSalesLine.data, { x: month, y: totalSales }];
-    totalUnitsLine.data = [...totalUnitsLine.data, { x: month, y: totalUnits }];
-   },
-  );
+  monthlyData.forEach(({ month, totalSales, totalUnits }) => {
+   totalSalesLine.data.push({ x: month, y: totalSales });
+   totalUnitsLine.data.push({ x: month, y: totalUnits });
+  });
 
-  const formattedData = [totalSalesLine, totalUnitsLine];
-  return [formattedData];
- }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
+  return [[totalSalesLine, totalUnitsLine]];
+ }, [data, theme.palette]);
 
  return (
   <Box m="1.5rem 2.5rem">
-   <Title title="MONTHLY SALES" subtitle="Chart of monthlysales" />
+   <Title title="MONTHLY SALES" subtitle="Chart of monthly sales" />
    <Box height="75vh">
     {data ? (
+     //@ts-ignore
      <ResponsiveLine
-      data={formattedData}
+      data={formattedData as Serie[]}
       theme={{
        axis: {
         domain: {
@@ -85,7 +97,6 @@ const Monthly = () => {
        reverse: false,
       }}
       yFormat=" >-.2f"
-      // curve="catmullRom"
       axisTop={null}
       axisRight={null}
       axisBottom={{
