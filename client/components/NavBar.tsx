@@ -1,5 +1,5 @@
 "use client";
-import { Rootstate } from "../redux/store";
+
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleMode } from "../redux/modeSlice/modeSlice";
@@ -11,6 +11,7 @@ import {
  SettingsOutlined,
 } from "@mui/icons-material";
 import { Box, IconButton, InputBase, useTheme } from "@mui/material";
+import { Rootstate } from "../redux/store";
 
 const NavBar = ({
  setIsSideBarOpen,
@@ -60,8 +61,8 @@ const NavBar = ({
     </IconButton>
     <IconButton
      onClick={() => {
-      //@ts-ignore
-      dispatch(toggleMode("dark"));
+      // Dispatch without any arguments
+      dispatch(toggleMode());
      }}
     >
      {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
