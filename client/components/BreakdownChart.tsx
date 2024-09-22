@@ -9,7 +9,7 @@ const BreakdownChart = ({ isDashboard = false }) => {
  const theme = useTheme();
 
  if (!data || isLoading) return "Loading...";
- console.log(data);
+
  const colors = [
   theme.palette.warning.dark,
   theme.palette.secondary.dark,

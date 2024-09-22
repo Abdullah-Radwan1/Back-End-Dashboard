@@ -11,7 +11,6 @@ const Page = () => {
  const theme = useTheme();
 
  // Log geoData to verify structure
- console.log("Geography Data:", geoData.features);
 
  return (
   <Box m="1.5rem 2.5rem">
@@ -21,7 +20,9 @@ const Page = () => {
     height="75vh"
     border={`1px solid ${theme.palette.primary.main}`}
     borderRadius="4px"
-    backgroundColor={theme.palette.background.default} // Adjust background color dynamically
+    sx={
+     { backgroundColor: theme.palette.background.default } // Adjust background color dynamically
+    }
    >
     {isLoading ? (
      <>Loading...</>

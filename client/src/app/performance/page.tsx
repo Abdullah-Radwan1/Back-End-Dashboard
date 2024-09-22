@@ -11,7 +11,7 @@ const Performance = () => {
  const userId = useSelector((state: Rootstate) => state.modeSlice.userId);
 
  const { data, isLoading } = useGetPerformanceQuery(userId);
- console.log(data);
+
  const columns = [
   {
    field: "_id",

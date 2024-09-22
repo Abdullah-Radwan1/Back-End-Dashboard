@@ -36,8 +36,7 @@ const SideBar = ({
  const router = useRouter();
  const pathName = usePathname();
  const theme = useTheme();
- console.log(pathName);
- console.log(data);
+
  return (
   <Box>
    {isSideBarOpen && (
@@ -48,6 +47,7 @@ const SideBar = ({
      anchor="left"
      PaperProps={{
       sx: {
+       pb: "2rem",
        width: drawerWidth,
        backgroundColor: theme.palette.background.paper, // Matches theme background
        borderWidth: isNonMobile ? 0 : "2px",
@@ -74,7 +74,12 @@ const SideBar = ({
         if (!icon) {
          return (
           <Typography
-           sx={{ p: "2.25rem 0 1rem 2.6rem", fontWeight: "bolder", fontSize: "1.1rem" }}
+           sx={{
+            p: ".5rem 0 1rem 2.6rem",
+            fontWeight: "bolder",
+            fontSize: "1.1rem",
+            color: theme.palette.secondary.dark,
+           }}
            key={text}
           >
            {text}
@@ -123,15 +128,9 @@ const SideBar = ({
      </Box>
      <Divider sx={{ backgroundColor: theme.palette.divider }} />
 
-     <Box my={"2rem"} display="flex" alignItems="center" justifyContent={"center"} gap={4}>
+     <Box my={"2rem"} display="flex" alignItems="center" justifyContent={"center"}>
       <section className="flex items-center gap-5">
-       <Image
-        width={40}
-        height={40}
-        src={"/241373641_887265995553345_4026210723519995756_n.jpg"}
-        alt=""
-        className="rounded-full"
-       />
+       <Image width={50} height={50} src={"/cartoon.jpg"} alt="" className="rounded-full" />
        <div>
         <Typography variant="h6" color={theme.palette.text.primary}>
          {data?.name}

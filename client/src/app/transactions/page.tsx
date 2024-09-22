@@ -23,7 +23,7 @@ const Page = () => {
   search,
  });
 
- console.log(data);
+
 
  return (
   <div className="container mx-auto">

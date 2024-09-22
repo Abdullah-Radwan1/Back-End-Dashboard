@@ -7,7 +7,7 @@ import Title from "../../../components/Title";
 
 const Admin = () => {
  const { data, isLoading } = useGetAdminsQuery(undefined);
- console.log(data);
+
  const columns = [
   {
    field: "_id",
