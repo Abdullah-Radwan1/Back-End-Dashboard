@@ -84,33 +84,32 @@ export default function Dashboard() {
 
     {/* ROW 2 */}
     <Box
-    gridColumn="span 8"
-    gridRow="span 3"
-    sx={{
+     gridColumn="span 8"
+     gridRow="span 3"
+     sx={{
       "& .MuiDataGrid-root": {
-        border: "none",
+       border: "none",
       },
       "& .MuiDataGrid-cell": {
-        borderBottom: "none",
+       borderBottom: "none",
       },
       "& .MuiDataGrid-columnHeaders": {
-        !backgroundColor: theme.palette.background.paper !,
-      
-        borderBottom: "none",
+       backgroundColor: theme.palette.background.main,
+       color: theme.palette.secondary.dark,
+       borderBottom: "none",
       },
       "& .MuiDataGrid-virtualScroller": {
-        backgroundColor: theme.palette.background.paper,
+       backgroundColor: theme.palette.background.paper,
       },
       "& .MuiDataGrid-footerContainer": {
-        backgroundColor: theme.palette.background.paper,
-        color: theme.palette.secondary.dark,
-        borderTop: "none",
+       backgroundColor: theme.palette.background.paper,
+       color: theme.palette.secondary.dark,
+       borderTop: "none",
       },
       "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-        color: `${theme.palette.secondary.main} !important`,
+       color: `${theme.palette.secondary.main} !important`,
       },
-    }}
-  >
+     }}
     >
      <DataGrid
       loading={isLoading || !data}
