@@ -49,7 +49,7 @@ const SideBar = ({
       sx: {
        pb: "2rem",
        width: drawerWidth,
-       backgroundColor: theme.palette.background.paper, // Matches theme background
+       backgroundColor: theme.palette.background.default, // Matches theme background
        borderWidth: isNonMobile ? 0 : "2px",
        "& .MuiListItemButton-root": {},
        "& .MuiListItemIcon-root": {
@@ -102,9 +102,9 @@ const SideBar = ({
             justifyItems: "center",
             pl: 5,
             backgroundColor:
-             pathName === `/${lcText}` ? theme.palette.background.main : "transparent", // Changes button background color
+             pathName === `/${lcText}` ? theme.palette.background.default : "transparent", // Changes button background color
             color:
-             pathName === `/${lcText}` ? theme.palette.text.contrast : theme.palette.text.primary, // Text color based on active state
+             pathName === `/${lcText}` ? theme.palette.text.primary : theme.palette.text.primary, // Text color based on active state
            }}
            onClick={() => {
             router.push(`/${lcText}`);
@@ -113,7 +113,7 @@ const SideBar = ({
            <IconButton
             sx={{
              color:
-              pathName === `/${lcText}` ? theme.palette.text.contrast : theme.palette.text.primary, // Dynamic icon color based on active state
+              pathName === `/${lcText}` ? theme.palette.text.secondary : theme.palette.text.primary, // Dynamic icon color based on active state
             }}
            >
             {icon}

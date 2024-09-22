@@ -94,7 +94,7 @@ export default function Dashboard() {
        borderBottom: "none",
       },
       "& .MuiDataGrid-columnHeaders": {
-       backgroundColor: theme.palette.background.main,
+       backgroundColor: theme.palette.background.paper,
        color: theme.palette.secondary.dark,
        borderBottom: "none",
       },

@@ -12,13 +12,11 @@ export const lightTheme = createTheme({
   background: {
    default: "#fcfcfc",
    paper: "#E6E6E6",
-   main: "#9e9e9e",
   },
   text: {
    primary: "#141414",
    secondary: "#292929",
    yellow: "#f0c808", // Adjusted yellow
-   contrast: "#000000",
   },
   neutral: {
    dark: "#9a9a9a", // Adjusted.
@@ -50,7 +48,7 @@ export const darkTheme = createTheme({
   },
   text: {
    primary: "#e0e0e0",
-   contrast: "#000000", // Adjusted secondary text for better readability.
+
    green: "#4cceac",
    yellow: "#fcfcfc", // Fixed missing #.
   },
