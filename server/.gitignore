@@ -4,10 +4,12 @@
 /node_modules
 /.pnp
 .pnp.js
+*.env
+.env
 /Full-Stack.mp4
 # testing
 /coverage
-.env
+
 # production
 /build
 
