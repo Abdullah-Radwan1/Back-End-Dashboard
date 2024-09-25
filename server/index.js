@@ -1,15 +1,16 @@
 import express from "express";
 import helmet from "helmet";
-
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import cors from "cors"; // Import CORS
+
 // import routes
 import generalRoutes from "./routes/general.js";
 import clientRoutes from "./routes/client.js";
 import salesRoutes from "./routes/sales.js";
 import managementRoutes from "./routes/management.js";
-//
+
 import AffiliateStat from "./models/affiliateStat.js";
 import { dataAffiliateStat } from "../server/data/data.js";
 
@@ -19,6 +20,7 @@ const PORT = process.env.PORT || 3000; // Fallback to port 3000 if PORT is not s
 const app = express();
 
 // CORS configuration
+app.use(cors()); // Enable CORS for all requests
 
 // Middlewares
 app.use(express.json());
