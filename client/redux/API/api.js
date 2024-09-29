@@ -1,7 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+// Use the environment variable for the base URL
+const baseUrl = "https://back-end-dashboard.vercel.app"; // Fallback if the env variable is not set
+console.log(baseUrl);
+
 export const api = createApi({
- baseQuery: fetchBaseQuery(),
+ baseQuery: fetchBaseQuery({ baseUrl }), // Dynamically use the baseUrl from the environment variable
  reducerPath: "adminApi",
  tagTypes: [
   "User",

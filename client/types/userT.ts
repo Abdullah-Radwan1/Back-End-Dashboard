@@ -17,3 +17,14 @@ export type Product = {
  supply: string;
  stat: Stat[];
 };
+
+// jsoooon
+// {
+//           "builds": [
+//            {
+//             "src": "package.json",
+//             "use": "@vercel/next"
+//            }
+//           ],
+//           "buildCommand": "tsc --noEmit && next build"
+//          }
