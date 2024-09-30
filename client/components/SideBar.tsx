@@ -7,14 +7,11 @@ import {
  List,
  ListItem,
  ListItemButton,
- ListItemIcon,
- ListItemText,
  Typography,
  useTheme,
  Box,
  Drawer,
  Divider,
- Icon,
 } from "@mui/material";
 import { ChevronLeft } from "@mui/icons-material";
 import Image from "next/image";
@@ -69,6 +66,29 @@ const SideBar = ({
      }}
     >
      <Box>
+      <Box my={"2rem"} display="flex" alignItems="center" justifyContent={"center"}>
+       <section className="flex items-center gap-5">
+        <Image width={50} height={50} src={"/cartoon.jpg"} alt="" className="rounded-full" />
+        <div>
+         <Typography variant="h6" color={theme.palette.text.primary}>
+          {data?.name}
+         </Typography>
+         <Typography variant="subtitle2" color={theme.palette.text.secondary}>
+          {data?.role}
+         </Typography>
+        </div>
+       </section>
+       {!isNonMobile && (
+        <IconButton
+         onClick={() => setIsSideBarOpen(!isSideBarOpen)}
+         sx={{ alignSelf: "flex-end", color: theme.palette.text.primary }}
+        >
+         <ChevronLeft />
+        </IconButton>
+       )}
+      </Box>
+      <Divider sx={{ backgroundColor: theme.palette.divider }} />
+
       <List>
        {navItems.map(({ text, icon }) => {
         if (!icon) {
@@ -90,7 +110,8 @@ const SideBar = ({
         return (
          <ListItem
           sx={{
-           backgroundColor: pathName === `/${lcText}` ? theme.palette.action.active : "transparent", // Changes background when path matches
+           backgroundColor:
+            pathName === `/${lcText}` ? theme.palette.action.focusOpacity : "transparent", // Changes background when path matches
           }}
           key={text}
           disablePadding
@@ -102,7 +123,7 @@ const SideBar = ({
             justifyItems: "center",
             pl: 5,
             backgroundColor:
-             pathName === `/${lcText}` ? theme.palette.background.default : "transparent", // Changes button background color
+             pathName === `/${lcText}` ? theme.palette.action.disabled : "transparent", // Changes button background color
             color:
              pathName === `/${lcText}` ? theme.palette.text.primary : theme.palette.text.primary, // Text color based on active state
            }}
@@ -125,29 +146,6 @@ const SideBar = ({
         );
        })}
       </List>
-     </Box>
-     <Divider sx={{ backgroundColor: theme.palette.divider }} />
-
-     <Box my={"2rem"} display="flex" alignItems="center" justifyContent={"center"}>
-      <section className="flex items-center gap-5">
-       <Image width={50} height={50} src={"/cartoon.jpg"} alt="" className="rounded-full" />
-       <div>
-        <Typography variant="h6" color={theme.palette.text.primary}>
-         {data?.name}
-        </Typography>
-        <Typography variant="subtitle2" color={theme.palette.text.secondary}>
-         {data?.role}
-        </Typography>
-       </div>
-      </section>
-      {!isNonMobile && (
-       <IconButton
-        onClick={() => setIsSideBarOpen(!isSideBarOpen)}
-        sx={{ alignSelf: "flex-end", color: theme.palette.text.primary }}
-       >
-        <ChevronLeft />
-       </IconButton>
-      )}
      </Box>
     </Drawer>
    )}
