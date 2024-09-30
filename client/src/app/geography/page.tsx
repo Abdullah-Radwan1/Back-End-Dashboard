@@ -5,6 +5,7 @@ import Title from "../../../components/Title";
 import { useGetGeographyQuery } from "../../../redux/API/api";
 import { ResponsiveChoropleth } from "@nivo/geo";
 import geoData from "../../../utils/geoData";
+import Loading from "../loading";
 
 const Page = () => {
  const { data, isLoading } = useGetGeographyQuery(undefined);
@@ -25,7 +26,7 @@ const Page = () => {
     }
    >
     {isLoading ? (
-     <>Loading...</>
+     <Loading />
     ) : geoData && geoData.features ? (
      <ResponsiveChoropleth
       data={data}

@@ -3,12 +3,13 @@ import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { Box, Typography, useTheme } from "@mui/material";
 import { useGetSalesQuery } from "../redux/API/api";
+import Loading from "@/app/loading";
 
 const BreakdownChart = ({ isDashboard = false }) => {
  const { data, isLoading } = useGetSalesQuery(undefined);
  const theme = useTheme();
 
- if (!data || isLoading) return "Loading...";
+ if (!data || isLoading) return <Loading />;
 
  const colors = [
   theme.palette.warning.dark,
