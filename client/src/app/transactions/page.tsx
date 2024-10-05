@@ -5,15 +5,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "../../../redux/API/api";
 import { transColumns } from "../../../utils/utils";
 import { Box, useTheme } from "@mui/material";
-import DataGridCustomToolbar from "../../../components/datagrid"; // Import your custom toolbar
-
 const Page = () => {
  const theme = useTheme();
  const [page, setPage] = useState(0);
  const [pageSize, setPageSize] = useState(20);
  const [sort, setSort] = useState({});
  const [search, setSearch] = useState("");
- const [searchInput, setSearchInput] = useState("");
 
  // Fetch transactions with the updated parameters
  const { data, isLoading } = useGetTransactionsQuery({
@@ -22,8 +19,6 @@ const Page = () => {
   sort: JSON.stringify(sort),
   search,
  });
-
-
 
  return (
   <div className="container mx-auto">

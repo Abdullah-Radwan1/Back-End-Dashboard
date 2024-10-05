@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 type Mode = "light" | "dark";
 
 const initialState: { mode: Mode; userId: string } = {
- mode: "dark",
+ mode: "light",
  userId: "63701cc1f03239b7f700000e",
 };
 

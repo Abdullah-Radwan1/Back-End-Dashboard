@@ -44,14 +44,11 @@ const SideBar = ({
      anchor="left"
      PaperProps={{
       sx: {
-       pb: "2rem",
        width: drawerWidth,
-       backgroundColor: theme.palette.background.default, // Matches theme background
        borderWidth: isNonMobile ? 0 : "2px",
        "& .MuiListItemButton-root": {},
        "& .MuiListItemIcon-root": {
         minWidth: "40px",
-        color: theme.palette.text.primary, // Icon color based on theme
        },
       },
      }}

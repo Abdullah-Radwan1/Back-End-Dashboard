@@ -35,14 +35,14 @@ const StatBox = ({
     {icon}
    </div>
 
-   <Typography variant="h3" fontWeight="600" sx={{ color: theme.palette.secondary.dark }}>
+   <Typography variant="h3" fontWeight="600" sx={{ color: theme.palette.primary.dark }}>
     {value}
    </Typography>
    <div className="flex justify-between gap-2">
-    <Typography variant="h5" fontStyle="italic" sx={{ color: theme.palette.secondary.light }}>
+    <Typography variant="h5" fontStyle="italic" sx={{ color: theme.palette.primary.dark }}>
      {increase}
     </Typography>
-    <Typography sx={{ color: theme.palette.secondary.dark }}>{description}</Typography>
+    <Typography sx={{ color: theme.palette.primary.dark }}>{description}</Typography>
    </div>
   </Box>
  );
