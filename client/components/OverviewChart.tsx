@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { useGetSalesQuery } from "../redux/API/api";
+import Loading from "@/app/loading";
 
 interface OverviewChartProps {
   isDashboard?: boolean;
@@ -20,7 +21,10 @@ interface LineData {
   data: { x: string; y: number }[];
 }
 
-const OverviewChart: React.FC<OverviewChartProps> = ({ isDashboard = false, view }) => {
+const OverviewChart: React.FC<OverviewChartProps> = ({
+  isDashboard = false,
+  view,
+}) => {
   const theme = useTheme();
   const { data, isLoading } = useGetSalesQuery(undefined);
 
@@ -42,7 +46,10 @@ const OverviewChart: React.FC<OverviewChartProps> = ({ isDashboard = false, view
     };
 
     monthlyData.reduce(
-      (acc: { sales: number; units: number }, { month, totalSales, totalUnits }) => {
+      (
+        acc: { sales: number; units: number },
+        { month, totalSales, totalUnits }
+      ) => {
         const curSales = acc.sales + totalSales;
         const curUnits = acc.units + totalUnits;
 
@@ -57,7 +64,7 @@ const OverviewChart: React.FC<OverviewChartProps> = ({ isDashboard = false, view
     return [[totalSalesLine], [totalUnitsLine]];
   }, [data, theme.palette]);
 
-  if (!data || isLoading) return <div>Loading...</div>;
+  if (!data || isLoading) return <Loading />;
 
   return (
     //@ts-ignore
