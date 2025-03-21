@@ -4,5 +4,5 @@ import { getSales } from "../controllers/sales.js";
 const router = express.Router();
 router.get("/sales", getSales);
 //last
-
+//test
 export default router;
