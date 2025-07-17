@@ -1,7 +1,6 @@
 import express from "express";
-import { getSales } from "../controllers/sales.js";
-
 const router = express.Router();
-router.get("/sales", getSales);
 
+router.post("/register", register);
+router.post("/login", login);
 export default router;
