@@ -35,6 +35,12 @@ export const api = createApi({
         body: { username, password },
       }),
     }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "auth/logout",
+        method: "POST",
+      }),
+    }),
     getProducts: builder.query({
       query: () => "client/products",
       providesTags: ["products"],

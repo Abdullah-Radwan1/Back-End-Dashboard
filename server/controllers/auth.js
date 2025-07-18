@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import passport from "passport";
 import bcrypt from "bcrypt";
 import "../strategy/passport.js";
+import { custome_error } from "../utils/custome_error.js";
 // Register controller
 export const register = async (req, res, next) => {
   try {
@@ -34,9 +35,7 @@ export const login = (req, res, next) => {
     if (err) return next(err);
 
     if (!user) {
-      return res
-        .status(401)
-        .json({ message: info?.message || "Invalid credentials" });
+      return next(custome_error("invalid credentials", 401));
     }
 
     req.logIn(user, (err) => {

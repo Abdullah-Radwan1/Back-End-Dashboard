@@ -14,9 +14,11 @@ import clientRoutes from "./routes/client.js";
 import salesRoutes from "./routes/sales.js";
 import managementRoutes from "./routes/management.js";
 import authRoutes from "./routes/auth.js";
+import { globalErrorHandler } from "./utils/globalErrorHandler.js";
 dotenv.config();
 const PORT = process.env.PORT || 3000; // Fallback to port 3000 if PORT is not set
 const app = express();
+
 // CORS configuration
 app.use(
   cors({
@@ -56,6 +58,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/auth", authRoutes);
+app.use(globalErrorHandler);
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URL)
