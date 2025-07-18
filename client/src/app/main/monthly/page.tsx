@@ -1,10 +1,10 @@
 "use client";
 import React, { useMemo } from "react";
 import { Box, useTheme } from "@mui/material";
-import Title from "../../../components/Title";
+import Title from "@/app/components/Title";
 import { ResponsiveLine, Serie } from "@nivo/line";
-import { useGetSalesQuery } from "../../../redux/API/api";
-import Loading from "../loading";
+import { useGetSalesQuery } from "../../../../redux/API/api";
+import Loading from "@/app/loading";
 
 interface SalesData {
   month: string;

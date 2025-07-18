@@ -8,12 +8,12 @@ import {
 } from "@mui/icons-material";
 import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import StatBox from "../../../components/StatBox";
-import OverviewChart from "../../../components/OverviewChart";
-import Title from "../../../components/Title";
-import BreakdownChart from "../../../components/BreakdownChart";
-import { useGetDashboardQuery } from "../../../redux/API/api";
-import { dashboardColums } from "../../../utils/utils";
+import StatBox from "@/app/components/StatBox";
+import OverviewChart from "@/app/components/OverviewChart";
+import Title from "@/app/components/Title";
+import BreakdownChart from "@/app/components/BreakdownChart";
+import { useGetDashboardQuery } from "../../../../redux/API/api";
+import { dashboardColums } from "../../../../utils/utils";
 export default function Dashboard() {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const theme = useTheme();

@@ -12,10 +12,10 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import Title from "../../../components/Title";
-import { useGetProductsQuery } from "../../../redux/API/api";
-import type { Product, Stat } from "../../../types/userT";
-import Loading from "../loading";
+import Title from "@/app/components/Title";
+import { useGetProductsQuery } from "../../../../redux/API/api";
+import type { Product, Stat } from "../../../../types/userT";
+import Loading from "@/app/loading";
 
 const Product = ({
   _id,

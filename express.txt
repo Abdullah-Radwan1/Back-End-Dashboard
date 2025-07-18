@@ -1,0 +1,5 @@
+app.use() is used to implement middlewares to the application
+
+app.use(express.json()); // For JSON data
+
+app.use(express.urlencoded({ extended: true })); // For form data

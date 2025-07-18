@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import { useTheme } from "@mui/material";
-import { useGetSalesQuery } from "../redux/API/api";
+import { useGetSalesQuery } from "../../../redux/API/api";
 import Loading from "@/app/loading";
 
 interface OverviewChartProps {

@@ -2,7 +2,7 @@
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { Box, Typography, useTheme } from "@mui/material";
-import { useGetSalesQuery } from "../redux/API/api";
+import { useGetSalesQuery } from "../../../redux/API/api";
 import Loading from "@/app/loading";
 
 const BreakdownChart = ({ isDashboard = false }) => {
