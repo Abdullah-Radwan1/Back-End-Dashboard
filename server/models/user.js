@@ -1,17 +1,8 @@
 import mongoose from "mongoose";
-const authenticated_user = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    min: 2,
-    max: 100,
-  },
-  password: {
-    type: String,
-    required: true,
-    min: 5,
-  },
+const UserSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 });
-const auth_user = mongoose.model("authenticated_user", authenticated_user);
+const User = mongoose.model("User", UserSchema);
 
-export default auth_user;
+export default User;

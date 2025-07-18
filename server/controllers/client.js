@@ -1,6 +1,6 @@
 import Product from "../models/product.js";
 import ProductStat from "../models/productStats.js";
-import admin from "../models/admin.js";
+import Customer from "../models/customer.js";
 import Transactionsmodel from "../models/transactions.js";
 export const getproducts = async (req, res) => {
   try {
@@ -21,9 +21,9 @@ export const getproducts = async (req, res) => {
   }
 };
 
-export const getAdmins = async (req, res) => {
+export const getCutomers = async (req, res) => {
   try {
-    const admins = await admin.find({ role: "admin" }).select("-password");
+    const admins = await Customer.find().select("-password");
 
     res.status(200).json(admins);
   } catch (error) {
