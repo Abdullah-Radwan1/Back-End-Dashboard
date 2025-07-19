@@ -1,6 +1,6 @@
+"use client";
 import React, { useMemo } from "react";
-import { ResponsiveLine, Serie } from "@nivo/line";
-import { useTheme } from "@mui/material";
+import { ResponsiveLine } from "@nivo/line";
 import { useGetSalesQuery } from "../../../redux/API/api";
 import Loading from "@/app/loading";
 
@@ -25,7 +25,6 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
   isDashboard = false,
   view,
 }) => {
-  const theme = useTheme();
   const { data, isLoading } = useGetSalesQuery(undefined);
 
   const [totalSalesLine, totalUnitsLine] = useMemo(() => {
@@ -35,13 +34,13 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
 
     const totalSalesLine: LineData = {
       id: "totalSales",
-      color: theme.palette.secondary.main,
+      color: "#4f46e5", // indigo-600
       data: [],
     };
 
     const totalUnitsLine: LineData = {
       id: "totalUnits",
-      color: theme.palette.primary.main,
+      color: "#4f46e5", // indigo-600
       data: [],
     };
 
@@ -62,45 +61,45 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
     );
 
     return [[totalSalesLine], [totalUnitsLine]];
-  }, [data, theme.palette]);
+  }, [data]);
 
   if (!data || isLoading) return <Loading />;
 
   return (
-    //@ts-ignore
     <ResponsiveLine
       data={view === "sales" ? totalSalesLine : totalUnitsLine}
       theme={{
         axis: {
           domain: {
             line: {
-              stroke: theme.palette.primary.main,
+              stroke: "#d1d5db", // gray-300
             },
           },
           legend: {
             text: {
-              fill: theme.palette.primary.main,
+              fill: "#6b7280", // gray-500
             },
           },
           ticks: {
             line: {
-              stroke: theme.palette.primary.main,
+              stroke: "#d1d5db", // gray-300
               strokeWidth: 1,
             },
             text: {
-              fill: theme.palette.primary.main,
+              fill: "#6b7280", // gray-500
             },
           },
         },
         legends: {
           text: {
-            fill: theme.palette.primary.main,
+            fill: "#6b7280", // gray-500
           },
         },
         tooltip: {
           container: {
-            color: theme.palette.primary.main,
-            backgroundColor: theme.palette.background.paper,
+            background: "#f9fafb", // gray-50
+            color: "#1f2937", // gray-800
+            fontSize: 12,
           },
         },
       }}

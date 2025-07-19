@@ -1,155 +1,121 @@
 "use client";
+
+import { Download, Mail, UserPlus, CreditCard, TrendingUp } from "lucide-react";
+import { useGetDashboardQuery } from "../../../../redux/API/api";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
-  DownloadOutlined,
-  Email,
-  PersonAdd,
-  PointOfSale,
-  Traffic,
-} from "@mui/icons-material";
-import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import StatBox from "@/app/components/StatBox";
 import OverviewChart from "@/app/components/OverviewChart";
-import Title from "@/app/components/Title";
 import BreakdownChart from "@/app/components/BreakdownChart";
-import { useGetDashboardQuery } from "../../../../redux/API/api";
-import { dashboardColums } from "../../../../utils/utils";
-export default function Dashboard() {
-  const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const theme = useTheme();
-  const { data, isLoading, isSuccess } = useGetDashboardQuery(undefined);
-  return (
-    <Box m="1.5rem 2.5rem">
-      <div className="flex justify-between">
-        <Title title="DASHBOARD" subtitle="Welcome to your dashboard" />
+import Title from "@/app/components/Title";
 
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: theme.palette.background.paper,
-              color: theme.palette.text.primary,
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlined sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
+export default function Dashboard() {
+  const { data, isLoading } = useGetDashboardQuery(undefined);
+
+  return (
+    <div className="min-h-screen px-4 py-6 lg:px-10 bg-muted/40">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+        <Title title="DASHBOARD" subtitle="Welcome to your dashboard" />
+        <Button variant="outline" className="flex items-center gap-2">
+          <Download className="text-base" />
+          Download Reports
+        </Button>
       </div>
 
-      <Box
-        mt="20px"
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="160px"
-        gap="20px"
-        sx={{
-          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" },
-        }}
-      >
-        {/* ROW 1 */}
+      {/* Stat boxes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
         <StatBox
           title="Total Customers"
-          value={data && data.totalCustomers}
+          value={data?.totalCustomers}
           increase="+14%"
           description="Since last month"
-          icon={
-            <Email
-              sx={{ color: theme.palette.secondary.main, fontSize: "26px" }}
-            />
-          }
+          icon={<Mail className="text-primary" />}
         />
         <StatBox
           title="Sales Today"
-          value={data && data.todayStats.totalSales}
+          value={data?.todayStats.totalSales}
           increase="+21%"
           description="Since last month"
-          icon={
-            <PointOfSale
-              sx={{ color: theme.palette.secondary.main, fontSize: "26px" }}
-            />
-          }
+          icon={<UserPlus className="text-primary" />}
         />
-
-        <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          sx={{ backgroundColor: theme.palette.background.paper }}
-          p="1rem"
-        >
-          <OverviewChart view="sales" isDashboard={true} />
-        </Box>
         <StatBox
           title="Monthly Sales"
-          value={data && data.thisMonthStats.totalSales}
+          value={data?.thisMonthStats.totalSales}
           increase="+5%"
           description="Since last month"
-          icon={
-            <PersonAdd
-              sx={{ color: theme.palette.secondary.main, fontSize: "26px" }}
-            />
-          }
+          icon={<CreditCard className="text-primary" />}
         />
         <StatBox
           title="Yearly Sales"
-          value={data && data.yearlySalesTotal}
+          value={data?.yearlySalesTotal}
           increase="+43%"
           description="Since last month"
-          icon={
-            <Traffic
-              sx={{ color: theme.palette.secondary.main, fontSize: "26px" }}
-            />
-          }
+          icon={<TrendingUp className="text-primary" />}
         />
+      </div>
 
-        {/* ROW 2 */}
-        <Box
-          gridColumn="span 8"
-          gridRow="span 3"
-          sx={{
-            "& .MuiDataGrid-root": {
-              border: "none",
-            },
-            "& .MuiDataGrid-cell": {
-              borderBottom: "none",
-            },
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: theme.palette.background.paper,
-              color: theme.palette.secondary.dark,
-              borderBottom: "none",
-            },
-            "& .MuiDataGrid-virtualScroller": {
-              backgroundColor: theme.palette.background.paper,
-            },
-            "& .MuiDataGrid-footerContainer": {
-              backgroundColor: theme.palette.background.paper,
-              color: theme.palette.secondary.dark,
-              borderTop: "none",
-            },
-            "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-              color: `${theme.palette.secondary.main} !important`,
-            },
-          }}
-        >
-          <DataGrid
-            loading={isLoading || !data}
-            getRowId={(row) => row._id}
-            rows={(data && data.transactions) || []}
-            columns={dashboardColums}
-          />
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 3"
-          sx={{ backgroundColor: theme.palette.background.paper }}
-          p="1.5rem"
-          borderRadius="0.55rem"
-        >
-          <BreakdownChart isDashboard={true} />
-        </Box>
-      </Box>
-    </Box>
+      {/* Charts */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 mb-6">
+        <Card className="col-span-1 xl:col-span-8">
+          <CardContent className="p-4">
+            <OverviewChart view="sales" isDashboard />
+          </CardContent>
+        </Card>
+
+        <Card className="col-span-1 xl:col-span-4">
+          <CardContent className="p-4">
+            <BreakdownChart isDashboard />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Transactions Table */}
+      <Card>
+        <CardContent className="p-4 overflow-x-auto">
+          <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>ID</TableHead>
+                <TableHead>User</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Products</TableHead>
+                <TableHead className="text-right">Cost</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {!isLoading && data?.transactions?.length > 0 ? (
+                data.transactions.map((tx) => (
+                  <TableRow key={tx._id}>
+                    <TableCell className="font-medium">{tx._id}</TableCell>
+                    <TableCell>{tx.userId}</TableCell>
+                    <TableCell>
+                      {new Date(tx.createdAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>{tx.products.length}</TableCell>
+                    <TableCell className="text-right">${tx.cost}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-8">
+                    {isLoading ? "Loading..." : "No transactions found."}
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

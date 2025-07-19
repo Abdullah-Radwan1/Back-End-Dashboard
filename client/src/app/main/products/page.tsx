@@ -1,23 +1,22 @@
 "use client";
+
 import React, { useState } from "react";
-import {
-  Box,
-  Card,
-  CardActions,
-  CardContent,
-  Collapse,
-  Button,
-  Typography,
-  Rating,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import Title from "@/app/components/Title";
 import { useGetProductsQuery } from "../../../../redux/API/api";
 import type { Product, Stat } from "../../../../types/userT";
 import Loading from "@/app/loading";
 
-const Product = ({
+const StarRating = ({ value }: { value: number }) => (
+  <div className="flex gap-1 mt-2 mb-2 text-yellow-500">
+    {Array.from({ length: 5 }, (_, i) => (
+      <span key={i}>{i < value ? "★" : "☆"}</span>
+    ))}
+  </div>
+);
+
+const ProductCard = ({
   _id,
   name,
   description,
@@ -27,117 +26,68 @@ const Product = ({
   supply,
   stat,
 }: Product) => {
-  const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <Card
-      sx={{
-        backgroundImage: "none",
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: "0.55rem",
-      }}
-    >
+    <Card className="bg-background rounded-xl shadow-md flex flex-col justify-between">
       <CardContent>
-        <Typography
-          sx={{ fontSize: 14 }}
-          color={theme.palette.primary.main}
-          gutterBottom
-        >
-          {category}
-        </Typography>
-        <Typography variant="h5" component="div">
-          {name}
-        </Typography>
-        <Typography sx={{ mb: "1.5rem" }} color={theme.palette.primary.main}>
+        <p className="text-sm text-primary font-medium">{category}</p>
+        <h3 className="text-xl font-semibold">{name}</h3>
+        <p className="text-primary font-semibold mb-4">
           ${Number(price).toFixed(2)}
-        </Typography>
-        <Rating value={rating} readOnly />
-
-        <Typography variant="body2">{description}</Typography>
+        </p>
+        <StarRating value={rating} />
+        <p className="text-sm text-muted-foreground">{description}</p>
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => setIsExpanded(!isExpanded)}>
-          See More
+      <CardFooter className="flex justify-between items-center px-4 pb-4">
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? "Hide" : "See More"}
         </Button>
-      </CardActions>
-      <Collapse
-        in={isExpanded}
-        timeout="auto"
-        unmountOnExit
-        sx={{
-          color: theme.palette.primary.main,
-        }}
-      >
-        <CardContent>
-          <Typography>id: {_id}</Typography>
-          <Typography>Supply Left: {supply}</Typography>
+      </CardFooter>
+
+      {isExpanded && (
+        <CardContent className="pt-0 text-sm text-muted-foreground space-y-2">
+          <p>
+            <span className="font-medium">ID:</span> {_id}
+          </p>
+          <p>
+            <span className="font-medium">Supply Left:</span> {supply}
+          </p>
           {stat.map((statItem: Stat, index: number) => (
-            <Box key={index} mt={2}>
-              <Typography>
-                Yearly Sales This Year: {statItem.yearlySalesTotal}
-              </Typography>
-              <Typography>
-                Yearly Units Sold This Year: {statItem.yearlyTotalSoldUnits}
-              </Typography>
-            </Box>
+            <div key={index} className="pt-2 border-t">
+              <p>Yearly Sales: {statItem.yearlySalesTotal}</p>
+              <p>Yearly Units Sold: {statItem.yearlyTotalSoldUnits}</p>
+            </div>
           ))}
         </CardContent>
-      </Collapse>
+      )}
     </Card>
   );
 };
 
 const Products = () => {
   const { data, isLoading } = useGetProductsQuery(undefined);
-  const isNonMobile = useMediaQuery("(min-width: 1000px)");
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <div className="px-10 py-6">
       <Title title="PRODUCTS" subtitle="See your list of products." />
+
       {data || !isLoading ? (
-        <Box
-          mt="20px"
-          display="grid"
-          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-          justifyContent="space-between"
-          rowGap="20px"
-          columnGap="1.33%"
-          sx={{
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-          }}
-        >
-          {data.map(
-            ({
-              _id,
-              name,
-              description,
-              price,
-              rating,
-              category,
-              supply,
-              stat,
-            }: Product) => (
-              <Product
-                key={_id}
-                _id={_id}
-                name={name}
-                description={description}
-                price={price}
-                rating={rating}
-                category={category}
-                supply={supply}
-                stat={stat} // stat is passed as a prop here
-              />
-            )
-          )}
-        </Box>
+        <div className="mt-6 grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {data.map((product: Product) => (
+            <ProductCard key={product._id} {...product} />
+          ))}
+        </div>
       ) : (
         <div className="h-[75vh]">
           <Loading />
         </div>
       )}
-    </Box>
+    </div>
   );
 };
 

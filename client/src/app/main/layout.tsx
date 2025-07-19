@@ -1,43 +1,37 @@
 "use client";
-import { Provider, useSelector } from "react-redux";
-import "/src/app/global.css";
-import { Rootstate, store } from "../../../redux/store";
+
 import NavBar from "../components/NavBar";
-import { Box, CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
-import { darkTheme, lightTheme } from "../theme";
 import SideBar from "../components/SideBar";
+
 import { useState } from "react";
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const mode = useSelector((state: Rootstate) => state.modeSlice.mode);
-
   const drawerWidth = "250px";
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-  const user = undefined;
+  const [isNonMobile, setIsNonMobile] = useState(true);
+
+  // Apply dark or light mode class to <html> element
+
   return (
-    <ThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>
-      <CssBaseline />
-      <Box
-        display={isNonMobile ? "flex" : "block"}
-        width={"100%"}
-        height={"100%"}
-      >
-        <SideBar
-          isNonMobile={isNonMobile}
-          drawerWidth={drawerWidth}
-          isSideBarOpen={isSideBarOpen}
-          setIsSideBarOpen={setIsSideBarOpen}
-        />
-        <Box width="100%">
-          <NavBar
-            isSideBarOpen={isSideBarOpen}
-            setIsSideBarOpen={setIsSideBarOpen}
-          />
-          {children}
-        </Box>
-      </Box>
-    </ThemeProvider>
+    <html suppressHydrationWarning>
+      <body>
+        <div>
+          {/* <SideBar
+        isNonMobile={isNonMobile}
+        drawerWidth={drawerWidth}
+        isSideBarOpen={isSideBarOpen}
+        setIsSideBarOpen={setIsSideBarOpen}
+      /> */}
+          <div className="w-full">
+            <NavBar
+              isSideBarOpen={isSideBarOpen}
+              setIsSideBarOpen={setIsSideBarOpen}
+            />
+            <main className="p-4">{children}</main>
+          </div>
+        </div>
+      </body>
+    </html>
   );
 }
 
@@ -47,11 +41,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <Provider store={store}>
-          <Layout>{children}</Layout>
-        </Provider>
+        <Layout>{children}</Layout>
       </body>
     </html>
   );

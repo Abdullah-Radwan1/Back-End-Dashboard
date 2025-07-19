@@ -1,55 +1,61 @@
 "use client";
 import React from "react";
-import { Search } from "@mui/icons-material";
-import { IconButton, TextField, InputAdornment } from "@mui/material";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
- GridToolbarDensitySelector,
- GridToolbarContainer,
- GridToolbarExport,
- GridToolbarColumnsButton,
-} from "@mui/x-data-grid";
+  SearchIcon,
+  ColumnsIcon,
+  DownloadIcon,
+  SlidersHorizontal,
+} from "lucide-react";
 
 const DataGridCustomToolbar = ({
- searchInput,
- setSearchInput,
- setSearch,
+  searchInput,
+  setSearchInput,
+  setSearch,
 }: {
- searchInput: string;
- setSearchInput: Function;
- setSearch: Function;
+  searchInput: string;
+  setSearchInput: (value: string) => void;
+  setSearch: (value: string) => void;
 }) => {
- return (
-  <GridToolbarContainer>
-   <div className="w-full flex justify-between">
-    <div className="flex justify-between">
-     <GridToolbarColumnsButton />
-     <GridToolbarDensitySelector />
-     <GridToolbarExport />
-    </div>
-    <TextField
-     label="Search..."
-     sx={{ mb: "0.5rem", width: "15rem" }}
-     onChange={(e) => setSearchInput(e.target.value)}
-     value={searchInput}
-     variant="standard"
-     InputProps={{
-      endAdornment: (
-       <InputAdornment position="end">
-        <IconButton
-         onClick={() => {
-          setSearch(searchInput);
-          setSearchInput("");
-         }}
+  return (
+    <div className="w-full flex justify-between items-center p-2 border-b">
+      <div className="flex items-center gap-2">
+        {/* Replace these with real toolbar actions */}
+        <Button variant="outline" size="sm">
+          <ColumnsIcon className="h-4 w-4 mr-1" />
+          Columns
+        </Button>
+        <Button variant="outline" size="sm">
+          <SlidersHorizontal className="h-4 w-4 mr-1" />
+          Density
+        </Button>
+        <Button variant="outline" size="sm">
+          <DownloadIcon className="h-4 w-4 mr-1" />
+          Export
+        </Button>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <Input
+          className="w-60"
+          placeholder="Search..."
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+        />
+        <Button
+          variant="default"
+          size="sm"
+          onClick={() => {
+            setSearch(searchInput);
+            setSearchInput("");
+          }}
         >
-         <Search />
-        </IconButton>
-       </InputAdornment>
-      ),
-     }}
-    />
-   </div>
-  </GridToolbarContainer>
- );
+          <SearchIcon className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default DataGridCustomToolbar;

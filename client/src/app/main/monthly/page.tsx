@@ -1,6 +1,6 @@
 "use client";
+
 import React, { useMemo } from "react";
-import { Box, useTheme } from "@mui/material";
 import Title from "@/app/components/Title";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import { useGetSalesQuery } from "../../../../redux/API/api";
@@ -20,7 +20,6 @@ interface LineData {
 
 const Monthly: React.FC = () => {
   const { data } = useGetSalesQuery(undefined);
-  const theme = useTheme();
 
   const [formattedData] = useMemo(() => {
     if (!data) return [[]];
@@ -29,13 +28,13 @@ const Monthly: React.FC = () => {
 
     const totalSalesLine: LineData = {
       id: "totalSales",
-      color: theme.palette.secondary.main,
+      color: "#6366f1", // indigo-500
       data: [],
     };
 
     const totalUnitsLine: LineData = {
       id: "totalUnits",
-      color: theme.palette.primary.main,
+      color: "#22c55e", // green-500
       data: [],
     };
 
@@ -45,12 +44,12 @@ const Monthly: React.FC = () => {
     });
 
     return [[totalSalesLine, totalUnitsLine]];
-  }, [data, theme.palette]);
+  }, [data]);
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <div className="px-10 py-6">
       <Title title="MONTHLY SALES" subtitle="Chart of monthly sales" />
-      <Box height="75vh">
+      <div className="h-[75vh]">
         {data ? (
           //@ts-ignore
           <ResponsiveLine
@@ -59,32 +58,32 @@ const Monthly: React.FC = () => {
               axis: {
                 domain: {
                   line: {
-                    stroke: theme.palette.primary.main,
+                    stroke: "#4b5563", // gray-700
                   },
                 },
                 legend: {
                   text: {
-                    fill: theme.palette.primary.main,
+                    fill: "#4b5563",
                   },
                 },
                 ticks: {
                   line: {
-                    stroke: theme.palette.primary.main,
+                    stroke: "#4b5563",
                     strokeWidth: 1,
                   },
                   text: {
-                    fill: theme.palette.primary.main,
+                    fill: "#4b5563",
                   },
                 },
               },
               legends: {
                 text: {
-                  fill: theme.palette.primary.main,
+                  fill: "#4b5563",
                 },
               },
               tooltip: {
                 container: {
-                  color: theme.palette.primary.main,
+                  color: "#4b5563",
                 },
               },
             }}
@@ -154,12 +153,12 @@ const Monthly: React.FC = () => {
             ]}
           />
         ) : (
-          <div className="h-[75vh]">
+          <div className="h-full">
             <Loading />
           </div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

@@ -1,18 +1,27 @@
 "use client";
+
 import React, { useState } from "react";
 import Title from "@/app/components/Title";
-import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "../../../../redux/API/api";
 import { transColumns } from "../../../../utils/utils";
-import { Box, useTheme } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 const Page = () => {
-  const theme = useTheme();
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
   const [sort, setSort] = useState({});
   const [search, setSearch] = useState("");
 
-  // Fetch transactions with the updated parameters
   const { data, isLoading } = useGetTransactionsQuery({
     page,
     pageSize,
@@ -20,60 +29,88 @@ const Page = () => {
     search,
   });
 
+  const handleSort = (field: string) => {
+    setSort((prev) => {
+      if (prev.field === field) {
+        return { field, sort: prev.sort === "asc" ? "desc" : "asc" };
+      }
+      return { field, sort: "asc" };
+    });
+  };
+
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto px-4 py-8">
       <Title title="TRANSACTIONS" subtitle="Entire list of transactions" />
 
-      <Box
-        mt="40px"
-        height="75vh"
-        sx={{
-          borderRadius: "0.55rem",
-
-          "& .MuiDataGrid-root": { border: "none" },
-          "& .MuiDataGrid-cell": { borderBottom: "none" },
-          "& .MuiDataGrid-columnHeaders": {
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: theme.palette.background.paper,
-          },
-          "& .MuiDataGrid-footerContainer": {
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.primary.main,
-            borderTop: "none",
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${theme.palette.text.primary} `,
-          },
-        }}
-      >
-        {/* Pass the custom toolbar to the DataGrid */}
-        <DataGrid
-          loading={isLoading || !data}
-          getRowId={(row) => row._id}
-          rows={data?.transactions || []}
-          columns={transColumns}
-          rowCount={data?.total || 0}
-          //@ts-ignore
-          rowsPerPageOptions={[20, 50, 100]}
-          pagination
-          page={page}
-          pageSize={pageSize}
-          paginationMode="server"
-          sortingMode="server"
-          onPageChange={(newPage: number) => setPage(newPage)}
-          onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-          onSortModelChange={(newSortModel) => {
-            if (newSortModel.length > 0) {
-              const { field, sort } = newSortModel[0];
-              setSort({ field, sort });
-            } else {
-              setSort({});
-            }
-          }}
+      <div className="flex items-center justify-between my-4">
+        <Input
+          placeholder="Search..."
+          className="w-64"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-      </Box>
+      </div>
+
+      <div className="rounded-2xl border shadow-sm overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {transColumns.map((col) => (
+                <TableHead
+                  key={col.field}
+                  className="cursor-pointer"
+                  onClick={() => handleSort(col.field)}
+                >
+                  {col.headerName}
+                  {sort.field === col.field &&
+                    (sort.sort === "asc" ? " ↑" : " ↓")}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {isLoading || !data ? (
+              <TableRow>
+                <TableCell colSpan={transColumns.length}>Loading...</TableCell>
+              </TableRow>
+            ) : data.transactions.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={transColumns.length}>
+                  No transactions found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              data.transactions.map((row: any) => (
+                <TableRow key={row._id}>
+                  {transColumns.map((col) => (
+                    <TableCell key={col.field}>{row[col.field]}</TableCell>
+                  ))}
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="flex justify-between items-center mt-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+          disabled={page === 0}
+        >
+          <ChevronLeft className="w-4 h-4 mr-2" /> Prev
+        </Button>
+        <span className="text-sm">Page {page + 1}</span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setPage((prev) => prev + 1)}
+          disabled={data?.transactions?.length < pageSize}
+        >
+          Next <ChevronRight className="w-4 h-4 ml-2" />
+        </Button>
+      </div>
     </div>
   );
 };

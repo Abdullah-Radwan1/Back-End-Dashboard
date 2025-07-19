@@ -1,21 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import {
-  Container,
-  Box,
-  Avatar,
-  Typography,
-  TextField,
-  Button,
-  Grid,
-  Link,
-  FormControlLabel,
-  Checkbox,
-  Alert,
-  Collapse,
-  IconButton,
-} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -101,8 +85,6 @@ const Register = () => {
 
       setSubmitSuccess(true);
       setSubmitError("");
-      // Optionally redirect to login page or dashboard
-      // router.push('/login');
     } catch (err) {
       setSubmitError(
         err instanceof Error ? err.message : "Registration failed"
@@ -112,142 +94,126 @@ const Register = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+    <main className="max-w-md mx-auto px-4 py-10">
+      <div className="flex flex-col items-center">
+        <div className="bg-purple-500 text-white rounded-full p-2 mb-2">
           <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
+        </div>
+        <h1 className="text-2xl font-semibold mb-4">Sign up</h1>
 
-        <Collapse in={!!submitError}>
-          <Alert
-            severity="error"
-            action={
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  setSubmitError("");
-                }}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-            sx={{ width: "100%", mt: 2 }}
-          >
-            {submitError}
-          </Alert>
-        </Collapse>
+        {submitError && (
+          <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            <span>{submitError}</span>
+            <button
+              onClick={() => setSubmitError("")}
+              className="absolute top-2 right-2 text-red-700"
+            >
+              <CloseIcon fontSize="small" />
+            </button>
+          </div>
+        )}
 
-        <Collapse in={submitSuccess}>
-          <Alert
-            severity="success"
-            action={
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  setSubmitSuccess(false);
-                }}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-            sx={{ width: "100%", mt: 2 }}
-          >
-            Registration successful! You can now log in.
-          </Alert>
-        </Collapse>
+        {submitSuccess && (
+          <div className="w-full bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+            <span>Registration successful! You can now log in.</span>
+            <button
+              onClick={() => setSubmitSuccess(false)}
+              className="absolute top-2 right-2 text-green-700"
+            >
+              <CloseIcon fontSize="small" />
+            </button>
+          </div>
+        )}
 
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="username"
-                name="username"
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                autoFocus
-                value={formData.username}
-                onChange={handleChange}
-                error={!!errors.username}
-                helperText={errors.username}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                value={formData.password}
-                onChange={handleChange}
-                error={!!errors.password}
-                helperText={errors.password}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                id="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="remember"
-                    color="primary"
-                    checked={formData.remember}
-                    onChange={handleChange}
-                  />
-                }
-                label="Remember me"
-              />
-            </Grid>
-          </Grid>
-          <Button
+        <form onSubmit={handleSubmit} className="w-full mt-4 space-y-4">
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-purple-500 focus:border-purple-500"
+            />
+            {errors.username && (
+              <p className="text-sm text-red-600 mt-1">{errors.username}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-purple-500 focus:border-purple-500"
+            />
+            {errors.password && (
+              <p className="text-sm text-red-600 mt-1">{errors.password}</p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium"
+            >
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-purple-500 focus:border-purple-500"
+            />
+            {errors.confirmPassword && (
+              <p className="text-sm text-red-600 mt-1">
+                {errors.confirmPassword}
+              </p>
+            )}
+          </div>
+
+          <div className="flex items-center">
+            <input
+              id="remember"
+              name="remember"
+              type="checkbox"
+              checked={formData.remember}
+              onChange={handleChange}
+              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+            />
+            <label
+              htmlFor="remember"
+              className="ml-2 block text-sm text-gray-900"
+            >
+              Remember me
+            </label>
+          </div>
+
+          <button
             type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded shadow"
           >
             Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
-    </Container>
+          </button>
+
+          <div className="text-sm text-right mt-2">
+            <a href="/login" className="text-purple-600 hover:underline">
+              Already have an account? Sign in
+            </a>
+          </div>
+        </form>
+      </div>
+    </main>
   );
 };
 

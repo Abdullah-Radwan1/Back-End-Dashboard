@@ -3,7 +3,7 @@ import passport from "passport";
 import bcrypt from "bcrypt";
 import "../strategy/passport.js";
 import { custome_error } from "../utils/custome_error.js";
-import { registerSchema } from "../utils/zod.schema.js";
+import { registerSchema, loginSchema } from "../utils/zod.schema.js";
 
 // Register controller
 export const register = async (req, res, next) => {
@@ -46,7 +46,7 @@ export const register = async (req, res, next) => {
 
 // Login controller
 export const login = (req, res, next) => {
-  const parsedData = registerSchema.safeParse(req.body);
+  const parsedData = loginSchema.safeParse(req.body);
   if (!parsedData.success) {
     // Send raw Zod error array
     return next(

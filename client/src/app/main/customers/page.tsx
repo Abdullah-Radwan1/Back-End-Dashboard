@@ -1,66 +1,62 @@
 "use client";
+
 import React from "react";
-import { Box } from "@mui/material";
 import { useGetCustomersQuery } from "../../../../redux/API/api";
-import { DataGrid } from "@mui/x-data-grid";
 import Title from "@/app/components/Title";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const Admin = () => {
   const { data, isLoading } = useGetCustomersQuery(undefined);
-  console.log(data);
-  const columns = [
-    {
-      field: "_id",
-      headerName: "ID",
-      flex: 1,
-    },
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 0.5,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "phoneNumber",
-      headerName: "Phone Number",
-      flex: 0.5,
-      renderCell: (params: any) => {
-        return params.value.replace(/^(\d{3})(\d{3})(\d{4})/, "($1)$2-$3");
-      },
-    },
-    {
-      field: "country",
-      headerName: "Country",
-      flex: 0.4,
-    },
-    {
-      field: "occupation",
-      headerName: "Occupation",
-      flex: 1,
-    },
-    {
-      field: "role",
-      headerName: "Role",
-      flex: 0.5,
-    },
-  ];
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <div className="px-10 py-6">
       <Title title="ADMINS" subtitle="Managing admins and list of admins" />
-      <Box mt="40px" height="75vh">
-        <DataGrid
-          loading={isLoading || !data}
-          getRowId={(row) => row._id}
-          rows={data || []}
-          columns={columns}
-        />
-      </Box>
-    </Box>
+
+      <div className="mt-10 max-h-[75vh] overflow-auto rounded-lg border shadow">
+        {isLoading ? (
+          <div className="text-center py-10 text-gray-500">Loading...</div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>ID</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Country</TableHead>
+                <TableHead>Occupation</TableHead>
+                <TableHead>Role</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data?.map((customer) => (
+                <TableRow key={customer._id}>
+                  <TableCell>{customer._id}</TableCell>
+                  <TableCell>{customer.name}</TableCell>
+                  <TableCell>{customer.email}</TableCell>
+                  <TableCell>
+                    {customer.phoneNumber.replace(
+                      /^(\d{3})(\d{3})(\d{4})/,
+                      "($1)$2-$3"
+                    )}
+                  </TableCell>
+                  <TableCell>{customer.country}</TableCell>
+                  <TableCell>{customer.occupation}</TableCell>
+                  <TableCell>{customer.role}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </div>
+    </div>
   );
 };
 

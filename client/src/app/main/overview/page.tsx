@@ -1,13 +1,14 @@
 "use client";
+
 import React, { useState } from "react";
+import { Label } from "@/components/ui/label";
 import {
-  FormControl,
-  MenuItem,
-  InputLabel,
-  Box,
   Select,
-  SelectChangeEvent,
-} from "@mui/material";
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Title from "@/app/components/Title";
 import OverviewChart from "@/app/components/OverviewChart";
 
@@ -17,27 +18,30 @@ type ViewType = "sales" | "units";
 const Overview: React.FC = () => {
   const [view, setView] = useState<ViewType>("units");
 
-  const handleViewChange = (e: SelectChangeEvent) => {
-    setView(e.target.value as ViewType); // Type assertion to "sales" | "units"
-  };
-
   return (
-    <Box m="1.5rem 2.5rem">
+    <div className="px-10 py-6">
       <Title
         title="OVERVIEW"
         subtitle="Overview of general revenue and profit"
       />
-      <Box height="75vh">
-        <FormControl sx={{ mt: "1rem" }}>
-          <InputLabel>View</InputLabel>
-          <Select value={view} label="View" onChange={handleViewChange}>
-            <MenuItem value="sales">Sales</MenuItem>
-            <MenuItem value="units">Units</MenuItem>
+
+      <div className="h-[75vh] space-y-6">
+        <div className="mt-4 max-w-xs">
+          <Label htmlFor="view">View</Label>
+          <Select value={view} onValueChange={(val: ViewType) => setView(val)}>
+            <SelectTrigger id="view">
+              <SelectValue placeholder="Select view" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="sales">Sales</SelectItem>
+              <SelectItem value="units">Units</SelectItem>
+            </SelectContent>
           </Select>
-        </FormControl>
+        </div>
+
         <OverviewChart view={view} />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

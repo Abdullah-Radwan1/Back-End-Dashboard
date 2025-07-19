@@ -1,79 +1,72 @@
 "use client";
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
-import { Box, Typography, useTheme } from "@mui/material";
 import { useGetSalesQuery } from "../../../redux/API/api";
 import Loading from "@/app/loading";
 
-const BreakdownChart = ({ isDashboard = false }) => {
+const BreakdownChart = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   const { data, isLoading } = useGetSalesQuery(undefined);
-  const theme = useTheme();
 
   if (!data || isLoading) return <Loading />;
 
-  const colors = [
-    theme.palette.warning.dark,
-    theme.palette.secondary.dark,
-    theme.palette.secondary.main,
-    theme.palette.warning.light,
-  ];
+  const colors = ["#f59e0b", "#7c3aed", "#8b5cf6", "#fde68a"]; // Tailwind-like palette
+
   const formattedData = Object.entries(data.salesByCategory).map(
     ([category, sales], i) => ({
       id: category,
       label: category,
       value: sales,
-      color: colors[i],
+      color: colors[i % colors.length],
     })
   );
 
   return (
-    <Box
-      height={isDashboard ? "400px" : "100%"}
-      width={undefined}
-      minHeight={isDashboard ? "325px" : undefined}
-      minWidth={isDashboard ? "325px" : undefined}
-      position="relative"
+    <div
+      className={`relative ${
+        isDashboard ? "h-[400px] min-h-[325px] min-w-[325px]" : "h-full"
+      }`}
     >
-      <Typography variant="h6" sx={{ color: theme.palette.secondary.dark }}>
+      <h2 className="text-lg font-semibold text-gray-700 mb-2">
         Sales By Category
-      </Typography>
+      </h2>
+
       <ResponsivePie
         data={formattedData}
         theme={{
           axis: {
             domain: {
               line: {
-                stroke: theme.palette.secondary.dark, // Changed color for axis domain line
+                stroke: "#e5e7eb",
               },
             },
             legend: {
               text: {
-                fill: theme.palette.secondary.main, // Changed legend text color
+                fill: "#9ca3af",
               },
             },
             ticks: {
               line: {
-                stroke: theme.palette.secondary.dark, // Adjusted tick lines
+                stroke: "#d1d5db",
                 strokeWidth: 1,
               },
               text: {
-                fill: theme.palette.secondary.main, // Adjusted tick text color
+                fill: "#9ca3af",
               },
             },
           },
           legends: {
             text: {
-              fill: theme.palette.primary.light, // Adjusted legend text color
+              fill: "#f3f4f6",
             },
           },
           tooltip: {
             container: {
-              background: theme.palette.background.paper, // Tooltip background for contrast
-              color: theme.palette.primary.main, // Tooltip text color
+              background: "#1f2937",
+              color: "#f3f4f6",
             },
           },
         }}
-        colors={{ datum: "data.color" }} // Pie slices based on color in data
+        colors={{ datum: "data.color" }}
         margin={
           isDashboard
             ? { top: 40, right: 80, bottom: 100, left: 50 }
@@ -83,30 +76,21 @@ const BreakdownChart = ({ isDashboard = false }) => {
         innerRadius={0.45}
         activeOuterRadiusOffset={8}
         borderWidth={1}
-        borderColor={{
-          from: "color",
-          modifiers: [["darker", 0.2]], // Darker borders
-        }}
+        borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
         enableArcLinkLabels={!isDashboard}
-        arcLinkLabelsTextColor={theme.palette.secondary.main} // Arc link label color
+        arcLinkLabelsTextColor="#9ca3af"
         arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: "color" }} // Links match arc color
+        arcLinkLabelsColor={{ from: "color" }}
         arcLabelsSkipAngle={10}
-        arcLabelsTextColor={{
-          from: "color",
-          modifiers: [["darker", 2]], // Make arc label text much darker
-        }}
+        arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
         legends={[
           {
             anchor: "bottom",
             direction: "row",
-            justify: false,
-            translateX: isDashboard ? 20 : 0,
             translateY: isDashboard ? 50 : 56,
-            itemsSpacing: 0,
             itemWidth: 85,
             itemHeight: 18,
-            itemTextColor: "#999", // Default item text color
+            itemTextColor: "#999",
             itemDirection: "left-to-right",
             itemOpacity: 1,
             symbolSize: 18,
@@ -115,7 +99,7 @@ const BreakdownChart = ({ isDashboard = false }) => {
               {
                 on: "hover",
                 style: {
-                  itemTextColor: theme.palette.primary.main, // Change text color on hover
+                  itemTextColor: "#2563eb",
                 },
               },
             ],
@@ -123,31 +107,23 @@ const BreakdownChart = ({ isDashboard = false }) => {
         ]}
       />
 
-      <Box
-        position="absolute"
-        top="50%"
-        left="50%"
-        textAlign="center"
-        sx={{
-          transform: isDashboard
-            ? "translate(-75%, -170%)"
-            : "translate(-50%, -100%)",
-          color: theme.palette.primary.main,
-        }}
+      <div
+        className={`absolute text-center font-medium text-blue-600 ${
+          isDashboard
+            ? "top-[15%] left-[15%] transform -translate-x-1/2 -translate-y-1/2"
+            : "top-[20%] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        }`}
       >
-        <Typography variant="h6">
+        <p className="text-base">
           {!isDashboard && "Total:"} ${data.yearlySalesTotal}
-        </Typography>
-      </Box>
-      <Typography
-        p="0 0.6rem"
-        fontSize="0.8rem"
-        sx={{ color: theme.palette.secondary.dark }}
-      >
-        Breakdown of real states and information via category for revenue made
+        </p>
+      </div>
+
+      <p className="text-sm text-gray-600 mt-4 px-2">
+        Breakdown of real estate and information via category for revenue made
         for this year and total sales.
-      </Typography>
-    </Box>
+      </p>
+    </div>
   );
 };
 

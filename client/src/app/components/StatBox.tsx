@@ -1,51 +1,35 @@
-"use client ";
+"use client";
+
 import React from "react";
-import { Box, Typography, useTheme } from "@mui/material";
 
 const StatBox = ({
- title,
- value,
- increase,
- icon,
- description,
+  title,
+  value,
+  increase,
+  icon,
+  description,
 }: {
- title: string;
- value: string;
- increase: string;
- icon: React.ReactNode;
- description: string;
+  title: string;
+  value: string;
+  increase: string;
+  icon: React.ReactNode;
+  description: string;
 }) => {
- const theme = useTheme();
- return (
-  <Box
-   gridColumn="span 2"
-   gridRow="span 1"
-   display="flex"
-   flexDirection="column"
-   justifyContent="space-between"
-   p="1.25rem 1rem"
-   flex="1 1 100%"
-   sx={{ backgroundColor: theme.palette.background.paper }}
-   borderRadius="0.55rem"
-  >
-   <div className="flex justify-between">
-    <Typography variant="h6" sx={{ color: theme.palette.secondary.dark }}>
-     {title}
-    </Typography>
-    {icon}
-   </div>
+  return (
+    <div className="col-span-2 row-span-1 flex flex-col justify-between rounded-xl bg-background p-5 shadow-sm border">
+      <div className="flex justify-between items-center">
+        <h3 className="text-muted-foreground text-lg font-medium">{title}</h3>
+        {icon}
+      </div>
 
-   <Typography variant="h3" fontWeight="600" sx={{ color: theme.palette.primary.dark }}>
-    {value}
-   </Typography>
-   <div className="flex justify-between gap-2">
-    <Typography variant="h5" fontStyle="italic" sx={{ color: theme.palette.primary.dark }}>
-     {increase}
-    </Typography>
-    <Typography sx={{ color: theme.palette.primary.dark }}>{description}</Typography>
-   </div>
-  </Box>
- );
+      <h2 className="text-3xl font-semibold text-primary mt-2">{value}</h2>
+
+      <div className="flex justify-between gap-2 mt-2">
+        <p className="italic text-muted-foreground text-base">{increase}</p>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
+    </div>
+  );
 };
 
 export default StatBox;
