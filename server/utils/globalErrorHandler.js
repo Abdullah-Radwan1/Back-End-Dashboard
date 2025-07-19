@@ -6,7 +6,7 @@ export const globalErrorHandler = (err, req, res, next) => {
   // Ensure always JSON
   res.status(statusCode).json({
     status,
-    message: err.message || "Something went wrong",
+    message: err.message || "custome error message",
     // Uncomment below in dev only
     // stack: err.stack
   });

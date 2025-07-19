@@ -7,7 +7,7 @@ import cors from "cors"; // Import CORS
 import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
-
+import rateLimit from "express-rate-limit";
 // import routes
 import generalRoutes from "./routes/general.js";
 import clientRoutes from "./routes/client.js";
@@ -26,10 +26,22 @@ app.use(
     credentials: true, // allow cookies, sessions, etc.
   })
 );
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: {
+    status: "fail",
+    message: "Too many requests, please try again later.",
+  },
+});
 
+app.use(limiter); // ⛔ Apply globally or to specific routes
+// app.use("/api/auth/login", apiLimiter); // apply only to login
 // Middlewares
 app.use(express.json());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+app.use(helmet.referrerPolicy({ policy: "strict-origin-when-cross-origin" }));
+
 app.use(morgan("common"));
 app.use(express.urlencoded({ extended: false }));
 

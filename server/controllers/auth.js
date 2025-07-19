@@ -3,34 +3,61 @@ import passport from "passport";
 import bcrypt from "bcrypt";
 import "../strategy/passport.js";
 import { custome_error } from "../utils/custome_error.js";
+import { registerSchema } from "../utils/zod.schema.js";
+
 // Register controller
 export const register = async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
+  const parsedData = registerSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    // Send raw Zod error array
+    return next(
+      custome_error(
+        parsedData.error.issues.map((e) => {
+          return e.message;
+        }),
+        400
+      )
+    );
+  }
 
+  const { username, password } = parsedData.data;
+
+  try {
     const existing = await User.findOne({ username });
     if (existing) {
-      return res.status(400).json({ message: "Username already exists" });
+      return next(custome_error("Username already exists", 400));
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
 
-    // ✅ Optional: Auto-login the user
     req.logIn(newUser, (err) => {
       if (err) return next(err);
-      res
-        .status(201)
-        .json({ message: "Registered and logged in", user: newUser });
+      res.status(201).json({
+        message: "Registered and logged in",
+        user: newUser,
+      });
     });
   } catch (error) {
-    res.status(500).json({ message: "Registration failed", error });
+    return next(custome_error("Registration failed", 500));
   }
 };
 
 // Login controller
 export const login = (req, res, next) => {
+  const parsedData = registerSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    // Send raw Zod error array
+    return next(
+      custome_error(
+        parsedData.error.issues.map((e) => {
+          return e.message;
+        }),
+        400
+      )
+    );
+  }
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
 
