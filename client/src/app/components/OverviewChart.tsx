@@ -1,6 +1,6 @@
 "use client";
 import React, { useMemo } from "react";
-import { ResponsiveLine } from "@nivo/line";
+import { ResponsiveLine, Serie } from "@nivo/line";
 import { useGetSalesQuery } from "../../../redux/API/api";
 import Loading from "@/app/loading";
 
@@ -34,13 +34,13 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
 
     const totalSalesLine: LineData = {
       id: "totalSales",
-      color: "#4f46e5", // indigo-600
+      color: "#ffffff", // white line
       data: [],
     };
 
     const totalUnitsLine: LineData = {
       id: "totalUnits",
-      color: "#4f46e5", // indigo-600
+      color: "#ffffff", // white line
       data: [],
     };
 
@@ -66,40 +66,40 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
   if (!data || isLoading) return <Loading />;
 
   return (
+    //@ts-ignore
     <ResponsiveLine
       data={view === "sales" ? totalSalesLine : totalUnitsLine}
       theme={{
         axis: {
           domain: {
             line: {
-              stroke: "#d1d5db", // gray-300
+              stroke: "#ffffff",
             },
           },
           legend: {
             text: {
-              fill: "#6b7280", // gray-500
+              fill: "#ffffff",
             },
           },
           ticks: {
             line: {
-              stroke: "#d1d5db", // gray-300
+              stroke: "#ffffff",
               strokeWidth: 1,
             },
             text: {
-              fill: "#6b7280", // gray-500
+              fill: "#ffffff",
             },
           },
         },
         legends: {
           text: {
-            fill: "#6b7280", // gray-500
+            fill: "#ffffff",
           },
         },
         tooltip: {
           container: {
-            background: "#f9fafb", // gray-50
-            color: "#1f2937", // gray-800
-            fontSize: 12,
+            color: "#ffffff",
+            background: "#1f1f1f",
           },
         },
       }}
@@ -142,9 +142,9 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
       enableGridX={false}
       enableGridY={false}
       pointSize={10}
-      pointColor={{ theme: "background" }}
+      pointColor="#1f1f1f"
       pointBorderWidth={2}
-      pointBorderColor={{ from: "serieColor" }}
+      pointBorderColor="#ffffff"
       pointLabelYOffset={-12}
       useMesh={true}
       legends={
@@ -163,12 +163,12 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
                 itemOpacity: 0.75,
                 symbolSize: 12,
                 symbolShape: "circle",
-                symbolBorderColor: "rgba(0, 0, 0, .5)",
+                symbolBorderColor: "rgba(255, 255, 255, 0.5)",
                 effects: [
                   {
                     on: "hover",
                     style: {
-                      itemBackground: "rgba(0, 0, 0, .03)",
+                      itemBackground: "rgba(255, 255, 255, 0.1)",
                       itemOpacity: 1,
                     },
                   },

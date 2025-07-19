@@ -66,15 +66,11 @@ export default function Dashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 mb-6">
         <Card className="col-span-1 xl:col-span-8">
-          <CardContent className="p-4">
-            <OverviewChart view="sales" isDashboard />
-          </CardContent>
+          <OverviewChart view="sales" isDashboard />
         </Card>
 
         <Card className="col-span-1 xl:col-span-4">
-          <CardContent className="p-4">
-            <BreakdownChart isDashboard />
-          </CardContent>
+          <BreakdownChart isDashboard />
         </Card>
       </div>
 
