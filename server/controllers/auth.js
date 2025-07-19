@@ -82,3 +82,14 @@ export const logout = (req, res) => {
     res.status(200).json({ message: "Logged out successfully" });
   });
 };
+
+export const me = (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    res.status(200).json({ user: req.user });
+  } catch (error) {
+    return next(custome_error("Failed to fetch user", 500));
+  }
+};
