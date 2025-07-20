@@ -1,37 +1,23 @@
 "use client";
 
+import { AppSidebar } from "../components/app-sidebar";
 import NavBar from "../components/NavBar";
-import SideBar from "../components/SideBar";
-
-import { useState } from "react";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const drawerWidth = "250px";
-  const [isSideBarOpen, setIsSideBarOpen] = useState(true);
-  const [isNonMobile, setIsNonMobile] = useState(true);
-
-  // Apply dark or light mode class to <html> element
-
   return (
-    <html suppressHydrationWarning>
-      <body>
-        <div>
-          {/* <SideBar
-        isNonMobile={isNonMobile}
-        drawerWidth={drawerWidth}
-        isSideBarOpen={isSideBarOpen}
-        setIsSideBarOpen={setIsSideBarOpen}
-      /> */}
-          <div className="w-full">
-            <NavBar
-              isSideBarOpen={isSideBarOpen}
-              setIsSideBarOpen={setIsSideBarOpen}
-            />
-            <main className="p-4">{children}</main>
-          </div>
+    <SidebarProvider>
+      <div className="flex w-full overflow-hidden bg-background text-foreground">
+        {/* Sidebar */}
+        <AppSidebar />
+
+        {/* Main Content Area */}
+        <div className="flex flex-col flex-1">
+          <NavBar />
+          <main className="p-4 overflow-y-auto">{children}</main>
         </div>
-      </body>
-    </html>
+      </div>
+    </SidebarProvider>
   );
 }
 

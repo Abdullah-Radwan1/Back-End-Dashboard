@@ -1,175 +1,28 @@
-import React from "react";
-import { navItems } from "../../../utils/utils";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  Typography,
-  useTheme,
-  Box,
-  Drawer,
-  Divider,
-} from "@mui/material";
-import { ChevronLeft } from "@mui/icons-material";
-import Image from "next/image";
+import Link from "next/link";
+import { navItems } from "../../../utils/nav-items";
 
-const SideBar = ({
-  setIsSideBarOpen,
-  isSideBarOpen,
-  isNonMobile,
-  drawerWidth,
-}: {
-  setIsSideBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isSideBarOpen: boolean;
-  isNonMobile: boolean;
-  drawerWidth: string;
-}) => {
-  const router = useRouter();
-  const pathName = usePathname();
-  const theme = useTheme();
-
+export default function SidebarNav() {
   return (
-    <Box>
-      {isSideBarOpen && (
-        <Drawer
-          open={isSideBarOpen}
-          onClose={() => setIsSideBarOpen(false)}
-          variant="persistent"
-          anchor="left"
-          PaperProps={{
-            sx: {
-              width: drawerWidth,
-              borderWidth: isNonMobile ? 0 : "2px",
-              "& .MuiListItemButton-root": {},
-              "& .MuiListItemIcon-root": {
-                minWidth: "40px",
-              },
-            },
-          }}
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: "border-box",
-              backgroundColor: theme.palette.background.paper, // Matches theme background
-            },
-          }}
-        >
-          <Box>
-            <Box
-              my={"2rem"}
-              display="flex"
-              alignItems="center"
-              justifyContent={"center"}
-            >
-              <section className="flex items-center gap-5">
-                <Image
-                  width={50}
-                  height={50}
-                  src={"/cartoon.jpg"}
-                  alt=""
-                  className="rounded-full"
-                />
-                <div>
-                  <Typography variant="h6" color={theme.palette.text.primary}>
-                    {/* {data?.name} */}
-                  </Typography>
-                  <Typography
-                    variant="subtitle2"
-                    color={theme.palette.text.secondary}
-                  >
-                    {/* {data?.role} */}
-                  </Typography>
-                </div>
-              </section>
-              {!isNonMobile && (
-                <IconButton
-                  onClick={() => setIsSideBarOpen(!isSideBarOpen)}
-                  sx={{
-                    alignSelf: "flex-end",
-                    color: theme.palette.text.primary,
-                  }}
-                >
-                  <ChevronLeft />
-                </IconButton>
-              )}
-            </Box>
-            <Divider sx={{ backgroundColor: theme.palette.divider }} />
-
-            <List>
-              {navItems.map(({ text, icon, path }) => {
-                if (!icon) {
-                  return (
-                    <Typography
-                      sx={{
-                        p: ".5rem 0 1rem 2.6rem",
-                        fontWeight: "bolder",
-                        fontSize: "1.1rem",
-                        color: theme.palette.secondary.dark,
-                      }}
-                      key={text}
-                    >
-                      {text}
-                    </Typography>
-                  );
-                }
-                const lcText = text.toLowerCase();
-                return (
-                  <ListItem
-                    sx={{
-                      backgroundColor:
-                        pathName === path
-                          ? theme.palette.action.focusOpacity
-                          : "transparent", // Changes background when path matches
-                    }}
-                    key={text}
-                    disablePadding
-                  >
-                    <ListItemButton
-                      className="flex justify-start gap-4 items-center "
-                      sx={{
-                        display: "flex",
-                        justifyItems: "center",
-                        pl: 5,
-                        backgroundColor:
-                          pathName === path
-                            ? theme.palette.action.disabled
-                            : "transparent", // Changes button background color
-                        color:
-                          pathName === path
-                            ? theme.palette.text.primary
-                            : theme.palette.text.primary, // Text color based on active state
-                      }}
-                      onClick={() => {
-                        router.push(path);
-                      }}
-                    >
-                      <IconButton
-                        sx={{
-                          color:
-                            pathName === path
-                              ? theme.palette.text.secondary
-                              : theme.palette.text.primary, // Dynamic icon color based on active state
-                        }}
-                      >
-                        {icon}
-                      </IconButton>
-
-                      <h2>{text}</h2>
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
-            </List>
-          </Box>
-        </Drawer>
+    <nav className="space-y-2">
+      {navItems.map((item, index) =>
+        item.type === "section" ? (
+          <p
+            key={index}
+            className="text-muted-foreground font-semibold uppercase text-xs px-4 pt-6"
+          >
+            {item.text}
+          </p>
+        ) : (
+          <Link
+            key={index}
+            href={item.path || "#"}
+            className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+          >
+            {item.icon}
+            <span className="text-sm">{item.text}</span>
+          </Link>
+        )
       )}
-    </Box>
+    </nav>
   );
-};
-
-export default SideBar;
+}
