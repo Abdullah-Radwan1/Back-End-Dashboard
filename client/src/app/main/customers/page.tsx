@@ -17,7 +17,7 @@ const Admin = () => {
 
   return (
     <div className="px-10 py-6">
-      <Title title="ADMINS" subtitle="Managing admins and list of admins" />
+      <Title title="Employees" subtitle="List of Employees and Admins" />
 
       <div className="mt-10 max-h-[75vh] overflow-auto rounded-lg border shadow">
         {isLoading ? (

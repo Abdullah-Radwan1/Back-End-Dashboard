@@ -26,7 +26,7 @@ const BreakdownChart = ({ isDashboard = false }: { isDashboard?: boolean }) => {
         isDashboard ? "h-[400px] min-h-[325px] min-w-[325px]" : "h-full"
       }`}
     >
-      <h2 className="text-lg font-semibold text-gray-700 mb-2">
+      <h2 className="text-lg font-semibold text-foreground mb-2">
         Sales By Category
       </h2>
 
@@ -118,11 +118,6 @@ const BreakdownChart = ({ isDashboard = false }: { isDashboard?: boolean }) => {
           {!isDashboard && "Total:"} ${data.yearlySalesTotal}
         </p>
       </div>
-
-      <p className="text-sm text-gray-600 mt-4 px-2">
-        Breakdown of real estate and information via category for revenue made
-        for this year and total sales.
-      </p>
     </div>
   );
 };

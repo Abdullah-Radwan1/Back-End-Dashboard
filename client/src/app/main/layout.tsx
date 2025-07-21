@@ -7,7 +7,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex w-full overflow-hidden bg-background text-foreground">
+      <div className="flex w-full overflow-hidden ">
         {/* Sidebar */}
         <AppSidebar />
 
@@ -26,11 +26,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <Layout>{children}</Layout>
-      </body>
-    </html>
-  );
+  return <Layout>{children}</Layout>;
 }

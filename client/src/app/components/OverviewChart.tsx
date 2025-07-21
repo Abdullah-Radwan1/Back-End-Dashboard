@@ -33,7 +33,7 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
 
   const lineColor = isDark ? "#ffffff" : "#1f1f1f";
   const textColor = isDark ? "#ffffff" : "#1f1f1f";
-  const bgColor = isDark ? "#1f1f1f" : "#ffffff";
+  const bgColor = isDark ? "#000000" : "#ececec";
   const pointColor = isDark ? "#1f1f1f" : "#ffffff";
 
   const [totalSalesLine, totalUnitsLine] = useMemo(() => {
@@ -177,7 +177,7 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
                   {
                     on: "hover",
                     style: {
-                      itemBackground: "rgba(255, 255, 255, 0.1)",
+                      itemBackground: "#ececec",
                       itemOpacity: 1,
                     },
                   },

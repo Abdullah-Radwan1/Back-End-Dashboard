@@ -29,10 +29,10 @@ export const api = createApi({
       }),
     }),
     register: builder.mutation({
-      query: ({ username, password }) => ({
+      query: ({ username, password, confirmPassword }) => ({
         url: "auth/register",
         method: "POST",
-        body: { username, password },
+        body: { username, password, confirmPassword },
       }),
     }),
 

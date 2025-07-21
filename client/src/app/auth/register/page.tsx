@@ -1,219 +1,189 @@
 "use client";
+
 import React, { useState } from "react";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import CloseIcon from "@mui/icons-material/Close";
+import { useRegisterMutation } from "../../../../redux/API/api";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Lock } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     confirmPassword: "",
-    remember: false,
   });
-  const [errors, setErrors] = useState({
-    username: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const router = useRouter();
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [register, { isLoading }] = useRegisterMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === "remember" ? checked : value,
-    });
-  };
-
-  const validate = () => {
-    let valid = true;
-    const newErrors = {
-      username: "",
-      password: "",
-      confirmPassword: "",
-    };
-
-    if (!formData.username.trim()) {
-      newErrors.username = "Username is required";
-      valid = false;
-    } else if (formData.username.length < 3) {
-      newErrors.username = "Username must be at least 3 characters";
-      valid = false;
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-      valid = false;
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-      valid = false;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-      valid = false;
-    }
-
-    setErrors(newErrors);
-    return valid;
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validate()) return;
+    if (formData.password !== formData.confirmPassword) {
+      setSubmitError("Passwords don't match");
+      return;
+    }
 
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: formData.username,
-          password: formData.password,
-          remember: formData.remember,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
-      }
-
+      await register({
+        username: formData.username,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      }).unwrap();
       setSubmitSuccess(true);
       setSubmitError("");
-    } catch (err) {
-      setSubmitError(
-        err instanceof Error ? err.message : "Registration failed"
-      );
+      router.push("/main/dashboard");
+    } catch (err: any) {
+      setSubmitError(err?.data?.message || "An error occurred");
+      console.log(err);
       setSubmitSuccess(false);
     }
   };
 
   return (
-    <main className="max-w-md mx-auto px-4 py-10">
-      <div className="flex flex-col items-center">
-        <div className="bg-purple-500 text-white rounded-full p-2 mb-2">
-          <LockOutlinedIcon />
+    <div className="w-full flex items-center justify-center p-4 min-h-screen">
+      <div className="w-full max-w-md bg-card shadow-lg rounded-lg overflow-hidden border border-border">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-primary to-blue-200 p-6 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-foreground/10">
+            <Lock className="text-primary-foreground" size={20} />
+          </div>
+          <h2 className="mt-4 text-xl font-bold text-primary-foreground">
+            Create Your Account
+          </h2>
+          <p className="text-primary-foreground/80 mt-1 text-sm">
+            Join our community today
+          </p>
         </div>
-        <h1 className="text-2xl font-semibold mb-4">Sign up</h1>
 
-        {submitError && (
-          <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-            <span>{submitError}</span>
-            <button
-              onClick={() => setSubmitError("")}
-              className="absolute top-2 right-2 text-red-700"
-            >
-              <CloseIcon fontSize="small" />
-            </button>
-          </div>
-        )}
+        {/* Form */}
+        <div className="px-6 py-6">
+          {/* Error message */}
+          {submitError && (
+            <div className="mb-4 flex items-start rounded-lg bg-destructive/10 p-3 text-destructive text-sm border border-destructive/20">
+              <p className="flex-1">{submitError}</p>
+              <button
+                onClick={() => setSubmitError("")}
+                className="ml-2 text-destructive hover:opacity-80"
+              >
+                ×
+              </button>
+            </div>
+          )}
 
-        {submitSuccess && (
-          <div className="w-full bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-            <span>Registration successful! You can now log in.</span>
-            <button
-              onClick={() => setSubmitSuccess(false)}
-              className="absolute top-2 right-2 text-green-700"
-            >
-              <CloseIcon fontSize="small" />
-            </button>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="w-full mt-4 space-y-4">
-          <div>
-            <label htmlFor="username" className="block text-sm font-medium">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-purple-500 focus:border-purple-500"
-            />
-            {errors.username && (
-              <p className="text-sm text-red-600 mt-1">{errors.username}</p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-purple-500 focus:border-purple-500"
-            />
-            {errors.password && (
-              <p className="text-sm text-red-600 mt-1">{errors.password}</p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-purple-500 focus:border-purple-500"
-            />
-            {errors.confirmPassword && (
-              <p className="text-sm text-red-600 mt-1">
-                {errors.confirmPassword}
+          {/* Success message */}
+          {submitSuccess && (
+            <div className="mb-4 flex items-start rounded-lg bg-emerald-50 dark:bg-emerald-900/20 p-3 text-emerald-600 dark:text-emerald-300 text-sm border border-emerald-200 dark:border-emerald-800">
+              <p className="flex-1">
+                Registration successful! You can now log in.
               </p>
-            )}
-          </div>
+              <button
+                onClick={() => setSubmitSuccess(false)}
+                className="ml-2 text-emerald-600 dark:text-emerald-400 hover:opacity-80"
+              >
+                ×
+              </button>
+            </div>
+          )}
 
-          <div className="flex items-center">
-            <input
-              id="remember"
-              name="remember"
-              type="checkbox"
-              checked={formData.remember}
-              onChange={handleChange}
-              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-            />
-            <label
-              htmlFor="remember"
-              className="ml-2 block text-sm text-gray-900"
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="username" className="text-foreground">
+                Username
+              </Label>
+              <Input
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                className="mt-1 bg-card border-border focus:ring-primary focus:border-primary"
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="password" className="text-foreground">
+                Password
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="mt-1 bg-card border-border focus:ring-primary focus:border-primary"
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="confirmPassword" className="text-foreground">
+                Confirm Password
+              </Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="mt-1 bg-card border-border focus:ring-primary focus:border-primary"
+                required
+              />
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-gradient-to-r from-primary to-blue-600 text-primary-foreground hover:from-primary/90 hover:to-blue-600/90"
+              disabled={isLoading}
             >
-              Remember me
-            </label>
-          </div>
+              {isLoading ? (
+                <span className="flex items-center justify-center">
+                  <svg
+                    className="mr-2 h-4 w-4 animate-spin"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
+                  </svg>
+                  Creating Account...
+                </span>
+              ) : (
+                "Sign Up"
+              )}
+            </Button>
+          </form>
 
-          <button
-            type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded shadow"
-          >
-            Sign Up
-          </button>
-
-          <div className="text-sm text-right mt-2">
-            <a href="/login" className="text-purple-600 hover:underline">
-              Already have an account? Sign in
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <a
+              href="/auth/login"
+              className="font-medium text-primary hover:text-primary/80 hover:underline"
+            >
+              Sign in
             </a>
-          </div>
-        </form>
+          </p>
+        </div>
       </div>
-    </main>
+    </div>
   );
 };
 

@@ -59,7 +59,7 @@ export const navItems = [
   },
   {
     type: "item",
-    text: "Customers",
+    text: "Employees",
     icon: <Users size={18} />,
     path: "/main/customers",
   },
