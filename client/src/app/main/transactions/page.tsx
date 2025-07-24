@@ -29,15 +29,6 @@ const Page = () => {
     search,
   });
 
-  const handleSort = (field: string) => {
-    setSort((prev) => {
-      if (prev.field === field) {
-        return { field, sort: prev.sort === "asc" ? "desc" : "asc" };
-      }
-      return { field, sort: "asc" };
-    });
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
       <Title title="TRANSACTIONS" subtitle="Entire list of transactions" />
@@ -56,14 +47,8 @@ const Page = () => {
           <TableHeader>
             <TableRow>
               {transColumns.map((col) => (
-                <TableHead
-                  key={col.field}
-                  className="cursor-pointer"
-                  onClick={() => handleSort(col.field)}
-                >
+                <TableHead key={col.field} className="cursor-pointer">
                   {col.headerName}
-                  {sort.field === col.field &&
-                    (sort.sort === "asc" ? " ↑" : " ↓")}
                 </TableHead>
               ))}
             </TableRow>

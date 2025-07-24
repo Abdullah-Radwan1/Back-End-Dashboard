@@ -46,8 +46,7 @@ const Login = () => {
     <div className="w-full flex items-center justify-center p-4 min-h-screen bg-gradient-to-r from-background to-slate-700">
       <div className="w-full max-w-md bg-card/90 backdrop-blur-sm shadow-xl rounded-lg overflow-hidden border border-border/20">
         {/* Header */}
-        <div className="bg-gradient-to-r from-primary to-blue-600 p-8 text-center relative">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent opacity-20"></div>
+        <div className="bg-gradient-to-r from-primary to-slate-400 p-8 text-center relative">
           <div className="relative mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary-foreground/10 backdrop-blur-sm">
             <Lock className="text-primary-foreground" size={24} />
           </div>
@@ -116,7 +115,7 @@ const Login = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-primary to-blue-600 text-primary-foreground hover:from-primary/90 hover:to-blue-600/90 shadow-md hover:shadow-primary/20 transition-all"
+              className="w-full bg-gradient-to-r from-primary to-slate-300 text-primary-foreground hover:from-primary/90  shadow-md hover:shadow-primary/20 transition-all"
               disabled={isLoading}
             >
               {isLoading ? (

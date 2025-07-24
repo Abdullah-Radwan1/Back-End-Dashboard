@@ -18,7 +18,7 @@ const Register = () => {
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [register, { isLoading }] = useRegisterMutation();
-
+  //todo
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -52,7 +52,7 @@ const Register = () => {
     <div className="w-full flex items-center justify-center p-4 min-h-screen">
       <div className="w-full max-w-md bg-card shadow-lg rounded-lg overflow-hidden border border-border">
         {/* Header */}
-        <div className="bg-gradient-to-r from-primary to-blue-200 p-6 text-center">
+        <div className="bg-gradient-to-r from-primary to-slate-300 p-6 text-center">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-foreground/10">
             <Lock className="text-primary-foreground" size={20} />
           </div>
@@ -60,7 +60,7 @@ const Register = () => {
             Create Your Account
           </h2>
           <p className="text-primary-foreground/80 mt-1 text-sm">
-            Join our community today
+            Manage your systems easly
           </p>
         </div>
 
@@ -141,7 +141,7 @@ const Register = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-primary to-blue-600 text-primary-foreground hover:from-primary/90 hover:to-blue-600/90"
+              className="w-full bg-gradient-to-r from-primary to-slate-300 text-primary-foreground hover:from-primary/90 hover:to-blue-600/90"
               disabled={isLoading}
             >
               {isLoading ? (

@@ -11,7 +11,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+type customer = {
+  _id: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  occupation: string;
+  country: string;
+  role: string;
+};
 const Admin = () => {
   const { data, isLoading } = useGetCustomersQuery(undefined);
 
@@ -36,7 +44,7 @@ const Admin = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.map((customer) => (
+              {data?.map((customer: customer) => (
                 <TableRow key={customer._id}>
                   <TableCell>{customer._id}</TableCell>
                   <TableCell>{customer.name}</TableCell>
