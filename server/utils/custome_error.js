@@ -7,3 +7,4 @@ export function custome_error(message, statusCode = 500, res) {
 
   return error;
 }
+// Usage in your routes or controllers
