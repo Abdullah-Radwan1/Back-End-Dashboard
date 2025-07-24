@@ -23,20 +23,23 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useMeQuery } from "../../../redux/API/api";
 
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
   const isActive = (path: string) => pathname === path;
+  const { data: me, isLoading: userLoading } = useMeQuery(undefined);
 
   return (
-    <Sidebar className="h-full border-r">
-      <SidebarContent>
+    <Sidebar className="h-full border-r ">
+      <SidebarContent className="bg-background text-foreground">
         {/* Group: Main */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-muted-foreground">
-            Main
+          <SidebarGroupLabel className="text-md">
+            Welcome back,{"\u00A0"}
+            <p className="text-purple"> {me?.user.username || "User"}!</p>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

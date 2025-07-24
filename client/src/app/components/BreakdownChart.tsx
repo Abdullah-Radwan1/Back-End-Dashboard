@@ -3,14 +3,15 @@ import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { useGetSalesQuery } from "../../../redux/API/api";
 import { Loader } from "lucide-react";
+import Image from "next/image";
 
 const BreakdownChart = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   const { data, isLoading } = useGetSalesQuery(undefined);
 
   if (!data || isLoading)
     return (
-      <div className="flex justify-center justify-items-center items-center h-full">
-        <Loader className="w-6 h-6  animate-spin " />
+      <div className="flex justify-center items-center min-h-[70vh]">
+        <Image alt="loader" width={100} height={100} src={"/inf.svg"} />
       </div>
     );
 
@@ -29,10 +30,13 @@ const BreakdownChart = ({ isDashboard = false }: { isDashboard?: boolean }) => {
     <div
       className={`relative ${
         isDashboard ? "h-[400px] min-h-[325px] min-w-[325px]" : "h-full"
-      }`}
+      } p-3`}
     >
-      <h2 className="text-lg font-semibold text-foreground mb-2">
+      <h2 className="text-lg font-semibold text-foreground ">
         Sales By Category
+        <span className="text-sidebar-ring ml-2">
+          {!isDashboard && "Total:"} ${data.yearlySalesTotal}
+        </span>
       </h2>
 
       <ResponsivePie
@@ -118,11 +122,7 @@ const BreakdownChart = ({ isDashboard = false }: { isDashboard?: boolean }) => {
             ? "top-[15%] left-[15%] transform -translate-x-1/2 -translate-y-1/2"
             : "top-[20%] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         }`}
-      >
-        <p className="text-base">
-          {!isDashboard && "Total:"} ${data.yearlySalesTotal}
-        </p>
-      </div>
+      ></div>
     </div>
   );
 };

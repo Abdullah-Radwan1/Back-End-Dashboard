@@ -42,6 +42,10 @@ export const api = createApi({
         method: "POST",
       }),
     }),
+    me: builder.query({
+      query: () => "auth/me",
+      providesTags: ["User"],
+    }),
     getProducts: builder.query({
       query: () => "client/products",
       providesTags: ["products"],
@@ -82,6 +86,7 @@ export const {
   useGetCustomersQuery,
   useGetPerformanceQuery,
   useGetDashboardQuery,
+  useMeQuery,
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,

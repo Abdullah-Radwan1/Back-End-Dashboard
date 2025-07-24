@@ -5,6 +5,7 @@ import Title from "@/app/components/Title";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import { useGetSalesQuery } from "../../../../redux/API/api";
 import { Loader } from "lucide-react";
+import { useTheme } from "next-themes";
 
 interface SalesData {
   month: string;
@@ -20,6 +21,17 @@ interface LineData {
 
 const Monthly: React.FC = () => {
   const { data } = useGetSalesQuery(undefined);
+  const { theme } = useTheme();
+
+  const isDark = theme === "dark";
+
+  const lineColor = isDark ? "#ffffff" : "#1f1f1f";
+  const textColor = isDark ? "#ffffff" : "#1f1f1f";
+  const bgColor = isDark ? "#000000" : "#ececec";
+  const pointColor = isDark ? "#1f1f1f" : "#ffffff";
+  const gridColor = isDark ? "#333333" : "#e5e7eb";
+  const tooltipBg = isDark ? "#2d3748" : "#f3f4f6";
+  const tooltipText = isDark ? "#f8fafc" : "#111827";
 
   const [formattedData] = useMemo(() => {
     if (!data) return [[]];
@@ -58,32 +70,33 @@ const Monthly: React.FC = () => {
               axis: {
                 domain: {
                   line: {
-                    stroke: "#4b5563", // gray-700
+                    stroke: gridColor,
                   },
                 },
                 legend: {
                   text: {
-                    fill: "#4b5563",
+                    fill: textColor,
                   },
                 },
                 ticks: {
                   line: {
-                    stroke: "#4b5563",
+                    stroke: gridColor,
                     strokeWidth: 1,
                   },
                   text: {
-                    fill: "#4b5563",
+                    fill: textColor,
                   },
                 },
               },
               legends: {
                 text: {
-                  fill: "#4b5563",
+                  fill: textColor,
                 },
               },
               tooltip: {
                 container: {
-                  color: "#4b5563",
+                  background: tooltipBg,
+                  color: tooltipText,
                 },
               },
             }}
@@ -120,7 +133,7 @@ const Monthly: React.FC = () => {
             enableGridX={false}
             enableGridY={false}
             pointSize={10}
-            pointColor={{ theme: "background" }}
+            pointColor={pointColor}
             pointBorderWidth={2}
             pointBorderColor={{ from: "serieColor" }}
             pointLabelYOffset={-12}
@@ -139,7 +152,7 @@ const Monthly: React.FC = () => {
                 itemOpacity: 0.75,
                 symbolSize: 12,
                 symbolShape: "circle",
-                symbolBorderColor: "rgba(0, 0, 0, .5)",
+                symbolBorderColor: lineColor,
                 effects: [
                   {
                     on: "hover",
@@ -153,7 +166,12 @@ const Monthly: React.FC = () => {
             ]}
           />
         ) : (
-          <Loader className="w-4 h-4 animate-spin  flex justify-center items-center" />
+          <div className="flex justify-center items-center h-full">
+            <Loader
+              className="w-8 h-8 animate-spin"
+              style={{ color: textColor }}
+            />
+          </div>
         )}
       </div>
     </div>

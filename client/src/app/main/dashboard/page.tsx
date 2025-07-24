@@ -1,9 +1,8 @@
 "use client";
 
-import { Download, Mail, UserPlus, CreditCard, TrendingUp } from "lucide-react";
-import { useGetDashboardQuery } from "../../../../redux/API/api";
+import { Mail, UserPlus, CreditCard, TrendingUp } from "lucide-react";
+import { useGetDashboardQuery, useMeQuery } from "../../../../redux/API/api";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -16,28 +15,21 @@ import StatBox from "@/app/components/StatBox";
 import OverviewChart from "@/app/components/OverviewChart";
 import BreakdownChart from "@/app/components/BreakdownChart";
 import Title from "@/app/components/Title";
+import Image from "next/image";
 
 export default function Dashboard() {
   const { data, isLoading } = useGetDashboardQuery(undefined);
-
   return (
     <div>
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
         <Title title="DASHBOARD" subtitle="Welcome to your dashboard" />
-        <Button
-          variant="outline"
-          className="flex items-center gap-2 border-border text-blue hover:bg-muted"
-        >
-          <Download className="text-blue" />
-          Download Reports
-        </Button>
       </div>
 
       {/* Row 1: StatBoxes + BreakdownChart */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {/* Stat Boxes: nested grid 1→2→4 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1  md:grid-cols-4 gap-4">
           <StatBox
             title="Total Customers"
             value={data?.totalCustomers}
@@ -75,7 +67,7 @@ export default function Dashboard() {
       </div>
 
       {/* Row 2: OverviewChart + Transactions Table */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {/* Overview Chart - Natural height */}
         <div className="self-start">
           {" "}
@@ -123,7 +115,18 @@ export default function Dashboard() {
                     ) : (
                       <TableRow>
                         <TableCell colSpan={5} className="text-center py-8">
-                          {isLoading ? "Loading..." : "No transactions found."}
+                          {isLoading ? (
+                            <div className="flex justify-center items-center min-h-[70vh]">
+                              <Image
+                                alt="loader"
+                                width={100}
+                                height={100}
+                                src={"/inf.svg"}
+                              />
+                            </div>
+                          ) : (
+                            "No transactions found."
+                          )}
                         </TableCell>
                       </TableRow>
                     )}

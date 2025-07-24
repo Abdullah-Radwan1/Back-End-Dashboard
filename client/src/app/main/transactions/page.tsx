@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 const Page = () => {
   const [page, setPage] = useState(0);
@@ -56,7 +57,17 @@ const Page = () => {
           <TableBody>
             {isLoading || !data ? (
               <TableRow>
-                <TableCell colSpan={transColumns.length}>Loading...</TableCell>
+                <TableCell colSpan={transColumns.length}>
+                  {" "}
+                  <div className="flex justify-center items-center min-h-[70vh]">
+                    <Image
+                      alt="loader"
+                      width={100}
+                      height={100}
+                      src={"/inf.svg"}
+                    />
+                  </div>
+                </TableCell>
               </TableRow>
             ) : data.transactions.length === 0 ? (
               <TableRow>

@@ -7,6 +7,7 @@ import Title from "@/app/components/Title";
 import { useGetProductsQuery } from "../../../../redux/API/api";
 import type { Product, Stat } from "../../../../types/userT";
 import { Loader } from "lucide-react";
+import Image from "next/image";
 
 // ⭐ Gold-colored stars with better spacing
 const StarRating = ({ value }: { value: number }) => (
@@ -93,9 +94,8 @@ const Products = () => {
           ))}
         </div>
       ) : (
-        <div className="h-[75vh]">
-          <Loader className="w-4 h-4 animate-spin  flex justify-center items-center" />
-          ;
+        <div className="flex justify-center items-center min-h-[70vh]">
+          <Image alt="loader" width={100} height={100} src={"/inf.svg"} />
         </div>
       )}
     </div>

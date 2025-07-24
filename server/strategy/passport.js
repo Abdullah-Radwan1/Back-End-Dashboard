@@ -4,7 +4,7 @@ import passport from "passport";
 import bcrypt from "bcrypt";
 
 passport.serializeUser((user, done) => {
-  console.log("serializeUser", user);
+  // console.log("serializeUser", user);
   done(null, user.username);
 });
 
@@ -18,7 +18,6 @@ passport.deserializeUser(async (username, done) => {
 });
 export default passport.use(
   new Strategy(async (username, password, done) => {
-    console.log(username, password);
     try {
       const user = await User.findOne({ username });
       if (!user) return done(null, false, { message: "User not found" });

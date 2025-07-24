@@ -83,6 +83,23 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
     //@ts-ignore
     <ResponsiveLine
       data={view === "sales" ? totalSalesLine : totalUnitsLine}
+      areaOpacity={0.1} // Adjust transparency (0.1 = 10% opacity)
+      fill={[
+        {
+          match: "*", // Applies to all series
+          id: "gradient", // Uses the defs gradient (if defined)
+        },
+      ]}
+      defs={[
+        {
+          id: "gradient",
+          type: "linearGradient",
+          colors: [
+            { offset: 0, color: isDark ? "#6366f1" : "#6366f1" }, // Start color (indigo)
+            { offset: 100, color: isDark ? "#A020F0" : "#ffffff00" }, // End color (transparent)
+          ],
+        },
+      ]}
       theme={{
         axis: {
           domain: {
