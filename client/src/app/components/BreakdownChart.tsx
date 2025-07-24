@@ -8,7 +8,11 @@ const BreakdownChart = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   const { data, isLoading } = useGetSalesQuery(undefined);
 
   if (!data || isLoading)
-    return <Loader className="w-4 h-4  flex justify-center items-center" />;
+    return (
+      <div className="flex justify-center justify-items-center items-center h-full">
+        <Loader className="w-6 h-6  animate-spin " />
+      </div>
+    );
 
   const colors = ["#f59e0b", "#7c3aed", "#8b5cf6", "#fde68a"]; // Tailwind-like palette
 

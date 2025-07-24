@@ -153,7 +153,7 @@ const Monthly: React.FC = () => {
             ]}
           />
         ) : (
-          <Loader className="w-4 h-4 flex justify-center items-center" />
+          <Loader className="w-4 h-4 animate-spin  flex justify-center items-center" />
         )}
       </div>
     </div>

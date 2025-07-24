@@ -70,9 +70,7 @@ export default function Dashboard() {
 
         {/* Breakdown Chart */}
         <Card className="bg-card text-card-foreground border border-border shadow">
-          <CardContent className="p-4">
-            <BreakdownChart isDashboard />
-          </CardContent>
+          <BreakdownChart isDashboard />
         </Card>
       </div>
 

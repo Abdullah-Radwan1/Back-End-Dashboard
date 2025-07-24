@@ -73,7 +73,11 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
   }, [data, lineColor]);
 
   if (!data || isLoading)
-    return <Loader className="w-4 h-4 flex  justify-center items-center" />;
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loader className="w-6 h-6  animate-spin " />
+      </div>
+    );
 
   return (
     //@ts-ignore
