@@ -34,7 +34,7 @@ const limiter = rateLimit({
     message: "Too many requests, please try again later.",
   },
 });
-
+//adding limiter to all routes
 app.use(limiter); // ⛔ Apply globally or to specific routes
 // app.use("/api/auth/login", apiLimiter); // apply only to login
 // Middlewares
