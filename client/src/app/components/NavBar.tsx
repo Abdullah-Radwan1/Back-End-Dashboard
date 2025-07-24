@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/alert-dialog";
 const NavBar = ({}: {}) => {
   const [logout, { isLoading }] = useLogoutMutation();
-  const router = useRouter();
   const handleLogout = async () => {
     try {
       await logout(undefined).unwrap();
@@ -59,9 +58,9 @@ const NavBar = ({}: {}) => {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction asChild>
+                <AlertDialogAction onClick={handleLogout} asChild>
                   <Button className="" variant={"destructive"}>
-                    <LogOut onClick={handleLogout} />
+                    <LogOut />
                   </Button>
                 </AlertDialogAction>
               </AlertDialogFooter>
