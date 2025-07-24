@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Title from "@/app/components/Title";
 import { useGetProductsQuery } from "../../../../redux/API/api";
 import type { Product, Stat } from "../../../../types/userT";
-import Loading from "@/app/Loading";
+import { Loader } from "lucide-react";
 
 // ⭐ Gold-colored stars with better spacing
 const StarRating = ({ value }: { value: number }) => (
@@ -94,7 +94,7 @@ const Products = () => {
         </div>
       ) : (
         <div className="h-[75vh]">
-          <Loading />
+          <Loader className="w-4 h-4 flex justify-center items-center" />;
         </div>
       )}
     </div>

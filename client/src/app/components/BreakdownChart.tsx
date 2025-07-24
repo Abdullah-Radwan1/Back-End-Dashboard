@@ -2,12 +2,13 @@
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { useGetSalesQuery } from "../../../redux/API/api";
-import Loading from "@/app/Loading";
+import { Loader } from "lucide-react";
 
 const BreakdownChart = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   const { data, isLoading } = useGetSalesQuery(undefined);
 
-  if (!data || isLoading) return <Loading />;
+  if (!data || isLoading)
+    return <Loader className="w-4 h-4  flex justify-center items-center" />;
 
   const colors = ["#f59e0b", "#7c3aed", "#8b5cf6", "#fde68a"]; // Tailwind-like palette
 

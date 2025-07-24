@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import { useTheme } from "next-themes";
 import { useGetSalesQuery } from "../../../redux/API/api";
-import Loading from "@/app/Loading";
+import { Loader } from "lucide-react";
 
 interface OverviewChartProps {
   isDashboard?: boolean;
@@ -72,7 +72,8 @@ const OverviewChart: React.FC<OverviewChartProps> = ({
     return [[totalSalesLine], [totalUnitsLine]];
   }, [data, lineColor]);
 
-  if (!data || isLoading) return <Loading />;
+  if (!data || isLoading)
+    return <Loader className="w-4 h-4 flex  justify-center items-center" />;
 
   return (
     //@ts-ignore

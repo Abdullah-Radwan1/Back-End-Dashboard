@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import Title from "@/app/components/Title";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import { useGetSalesQuery } from "../../../../redux/API/api";
-import Loading from "@/app/Loading";
+import { Loader } from "lucide-react";
 
 interface SalesData {
   month: string;
@@ -153,9 +153,7 @@ const Monthly: React.FC = () => {
             ]}
           />
         ) : (
-          <div className="h-full">
-            <Loading />
-          </div>
+          <Loader className="w-4 h-4 flex justify-center items-center" />
         )}
       </div>
     </div>
