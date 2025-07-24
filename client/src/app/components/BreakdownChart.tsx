@@ -2,7 +2,7 @@
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { useGetSalesQuery } from "../../../redux/API/api";
-import Loading from "@/app/loading";
+import Loading from "@/app/Loading";
 
 const BreakdownChart = ({ isDashboard = false }: { isDashboard?: boolean }) => {
   const { data, isLoading } = useGetSalesQuery(undefined);

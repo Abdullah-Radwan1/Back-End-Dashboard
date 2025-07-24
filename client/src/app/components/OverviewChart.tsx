@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import { useTheme } from "next-themes";
 import { useGetSalesQuery } from "../../../redux/API/api";
-import Loading from "@/app/loading";
+import Loading from "@/app/Loading";
 
 interface OverviewChartProps {
   isDashboard?: boolean;

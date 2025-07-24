@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import Title from "@/app/components/Title";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import { useGetSalesQuery } from "../../../../redux/API/api";
-import Loading from "@/app/loading";
+import Loading from "@/app/Loading";
 
 interface SalesData {
   month: string;

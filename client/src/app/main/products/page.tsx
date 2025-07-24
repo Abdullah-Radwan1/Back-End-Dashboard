@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Title from "@/app/components/Title";
 import { useGetProductsQuery } from "../../../../redux/API/api";
 import type { Product, Stat } from "../../../../types/userT";
-import Loading from "@/app/loading";
+import Loading from "@/app/Loading";
 
 // ⭐ Gold-colored stars with better spacing
 const StarRating = ({ value }: { value: number }) => (

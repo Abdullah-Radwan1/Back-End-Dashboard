@@ -35,6 +35,9 @@ const Login = () => {
         password: formData.password,
       }).unwrap();
       setSubmitSuccess(true);
+      const date = new Date();
+      date.setTime(date.getTime() + 1 * 24 * 60 * 60 * 1000); // 1 day
+      document.cookie = `auth-token=true; expires=${date.toUTCString()}; path=/`;
       router.push("/main/dashboard");
     } catch (err: any) {
       setSubmitError(err?.data?.message);

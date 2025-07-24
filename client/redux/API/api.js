@@ -84,4 +84,5 @@ export const {
   useGetDashboardQuery,
   useLoginMutation,
   useRegisterMutation,
+  useLogoutMutation,
 } = api;
