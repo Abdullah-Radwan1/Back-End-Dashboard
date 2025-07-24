@@ -24,7 +24,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useMeQuery } from "../../../redux/API/api";
-
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -32,6 +31,7 @@ export function AppSidebar() {
   const isActive = (path: string) => pathname === path;
   const { data: me, isLoading: userLoading } = useMeQuery(undefined);
 
+  console.log(me);
   return (
     <Sidebar className="h-full border-r ">
       <SidebarContent className="bg-background text-foreground">
@@ -39,7 +39,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="text-md">
             Welcome back,{"\u00A0"}
-            <p className="text-purple"> {me?.user.username || "User"}!</p>
+            <p className="text-purple"> {me?.username || "can you wait ?"}!</p>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

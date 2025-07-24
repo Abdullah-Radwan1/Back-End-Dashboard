@@ -88,7 +88,10 @@ export const me = (req, res) => {
     if (!req.user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    res.status(200).json({ user: req.user });
+    //return user without password
+    const { username } = req.user.toObject(); // <--- convert to plain object
+
+    res.status(200).json({ username });
   } catch (error) {
     return next(custome_error("Failed to fetch user", 500));
   }
