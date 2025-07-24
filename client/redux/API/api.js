@@ -4,7 +4,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Fallback if the env variable is not set
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl }), // Dynamically use the baseUrl from the environment variable
+  baseQuery: fetchBaseQuery({
+    baseUrl,
+    credentials: "include", // ✅ Send cookies for sessions
+  }), // Dynamically use the baseUrl from the environment variable
   reducerPath: "adminApi",
   tagTypes: [
     "User",
@@ -13,23 +16,37 @@ export const api = createApi({
     "Transactions",
     "geography",
     "sales",
-    "admins",
+    "customers",
     "performance",
     "dashboard",
   ],
   endpoints: (builder) => ({
-    getUser: builder.query({
-      query: (id) => `general/user/${id}`,
-      providesTags: ["User"],
+    login: builder.mutation({
+      query: ({ username, password }) => ({
+        url: "auth/login",
+        method: "POST",
+        body: { username, password },
+      }),
+    }),
+    register: builder.mutation({
+      query: ({ username, password, confirmPassword }) => ({
+        url: "auth/register",
+        method: "POST",
+        body: { username, password, confirmPassword },
+      }),
+    }),
+
+    logout: builder.mutation({
+      query: () => ({
+        url: "auth/logout",
+        method: "POST",
+      }),
     }),
     getProducts: builder.query({
       query: () => "client/products",
       providesTags: ["products"],
     }),
-    getCustomers: builder.query({
-      query: () => "client/customers",
-      providesTags: ["customers"],
-    }),
+
     getTransactions: builder.query({
       query: ({ page, pageSize, sort, search }) => ({
         url: "client/transactions",
@@ -38,17 +55,14 @@ export const api = createApi({
       }),
       providesTags: ["Transactions"],
     }),
-    getGeography: builder.query({
-      query: () => "client/geography",
-      providesTags: ["geography"],
-    }),
+
     getSales: builder.query({
       query: () => "sales/sales",
       providesTags: ["sales"],
     }),
-    getAdmins: builder.query({
-      query: () => "management/admins",
-      providesTags: ["admins"],
+    getCustomers: builder.query({
+      query: () => "management/customers",
+      providesTags: ["customers"],
     }),
     getPerformance: builder.query({
       query: (id) => `management/performance/${id}`,
@@ -62,13 +76,12 @@ export const api = createApi({
 });
 
 export const {
-  useGetUserQuery,
   useGetProductsQuery,
-  useGetCustomersQuery,
   useGetTransactionsQuery,
-  useGetGeographyQuery,
   useGetSalesQuery,
-  useGetAdminsQuery,
+  useGetCustomersQuery,
   useGetPerformanceQuery,
   useGetDashboardQuery,
+  useLoginMutation,
+  useRegisterMutation,
 } = api;
