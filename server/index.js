@@ -20,6 +20,8 @@ const PORT = process.env.PORT || 3000; // Fallback to port 3000 if PORT is not s
 const app = express();
 
 // CORS configuration
+app.set("trust proxy", 1); // needed if behind HTTPS proxy
+
 app.use(
   cors({
     origin: process.env.FRONT_END_URL, // or whatever your frontend is
@@ -61,7 +63,7 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
-      secure: false, // change to true in prod + https
+      secure: true, // change to true in prod + https
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
