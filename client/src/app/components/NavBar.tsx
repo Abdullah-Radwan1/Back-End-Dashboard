@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import Link from "next/link";
 const NavBar = ({}: {}) => {
-  const { data: me } = useMeQuery(undefined);
+  const { isLoading: userLoading, isSuccess } = useMeQuery(undefined);
   const [logout, { isLoading }] = useLogoutMutation();
   const handleLogout = async () => {
     try {
@@ -41,9 +41,9 @@ const NavBar = ({}: {}) => {
 
       {/* Right side: Settings + Mode Switch */}
       <div className="flex items-center gap-2">
-        {isLoading ? (
+        {isLoading || userLoading ? (
           <Loader className="animate-spin" size={20} />
-        ) : !me ? (
+        ) : !isSuccess ? (
           <Button variant={"link"}>
             <Link href={"/auth/login"}> Login</Link>
           </Button>
