@@ -58,6 +58,7 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
+      //fixing cookie issues with cross-domain
       secure: process.env.NODE_ENV === "production", // true only in prod + HTTPS
       httpOnly: true,
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // none for cross-domain cookies
