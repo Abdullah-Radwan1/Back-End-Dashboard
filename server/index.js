@@ -3,61 +3,75 @@ import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import passport from "passport";
+
+// Import your routes
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
+import productRoutes from "./routes/products.js";
 
 const app = express();
 
-// ✅ Trust proxy is needed if you’re behind Nginx, Vercel, Render, etc.
+// ✅ Trust proxy for HTTPS cookies
 app.set("trust proxy", 1);
 
-// ✅ Helmet security but without breaking cookies
+// ✅ Helmet with safer defaults for cookies
 app.use(
   helmet({
-    crossOriginEmbedderPolicy: false, // Needed for some cross-origin cookies
-    contentSecurityPolicy: false, // Avoid strict blocking unless needed
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: false,
   })
 );
 
-// ✅ Optional: keep referer safe but not blocking cookies
 app.use(
   helmet.referrerPolicy({
-    policy: "no-referrer-when-downgrade", // Safe & cookie-friendly
+    policy: "no-referrer-when-downgrade",
   })
 );
 
-// ✅ CORS settings to allow credentials (cookies)
+// ✅ CORS to allow credentials
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // e.g., "https://yourfrontend.com"
+    origin: process.env.CLIENT_URL, // example: "https://yourfrontend.com"
     credentials: true,
   })
 );
 
-// ✅ Body parsers
+// ✅ Parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ✅ Session cookie settings
+// ✅ Session config
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "supersecret",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
-      httpOnly: true, // JS can't access the cookie
-      secure: process.env.NODE_ENV === "production", // Only HTTPS in prod
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Allow cross-site in prod
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      httpOnly: false, // allow JS access
+      secure: true, // must be true for cross-site in HTTPS
+      sameSite: "none", // allow all sites
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
     },
   })
 );
 
-// ✅ Example auth route
-app.get("/auth/me", (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ message: "Unauthorized" });
+// ✅ Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// ✅ Routes
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/products", productRoutes);
+
+// ✅ Example route to test cookies
+app.get("/check-cookie", (req, res) => {
+  if (req.session.user) {
+    return res.json({ loggedIn: true, user: req.session.user });
   }
-  res.json({ username: req.session.user.username });
+  res.json({ loggedIn: false });
 });
 
 export default app;
