@@ -1,97 +1,63 @@
 import express from "express";
-import helmet from "helmet";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import morgan from "morgan";
 import cors from "cors";
+import helmet from "helmet";
+import cookieParser from "cookie-parser";
 import session from "express-session";
-import passport from "passport";
-import MongoStore from "connect-mongo";
-import rateLimit from "express-rate-limit";
 
-import generalRoutes from "./routes/general.js";
-import clientRoutes from "./routes/client.js";
-import salesRoutes from "./routes/sales.js";
-import managementRoutes from "./routes/management.js";
-import authRoutes from "./routes/auth.js";
-import { globalErrorHandler } from "./utils/globalErrorHandler.js";
-
-dotenv.config();
-
-const PORT = process.env.PORT || 3000;
 const app = express();
 
-const isProduction = process.env.NODE_ENV === "production";
-
-// ✅ Needed for secure cookies behind reverse proxy (Heroku, Render, etc.)
+// ✅ Trust proxy is needed if you’re behind Nginx, Vercel, Render, etc.
 app.set("trust proxy", 1);
 
-// ----------- CORS configuration -----------
+// ✅ Helmet security but without breaking cookies
 app.use(
-  cors({
-    origin: process.env.FRONT_END_URL, // Must be EXACT URL (https://domain.com)
-    credentials: true, // Allow cookies
+  helmet({
+    crossOriginEmbedderPolicy: false, // Needed for some cross-origin cookies
+    contentSecurityPolicy: false, // Avoid strict blocking unless needed
   })
 );
 
-// ----------- Security & rate limiting -----------
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: {
-    status: "fail",
-    message: "Too many requests, please try again later.",
-  },
-});
-app.use(limiter);
+// ✅ Optional: keep referer safe but not blocking cookies
+app.use(
+  helmet.referrerPolicy({
+    policy: "no-referrer-when-downgrade", // Safe & cookie-friendly
+  })
+);
 
+// ✅ CORS settings to allow credentials (cookies)
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL, // e.g., "https://yourfrontend.com"
+    credentials: true,
+  })
+);
+
+// ✅ Body parsers
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use(helmet.referrerPolicy({ policy: "strict-origin-when-cross-origin" }));
-app.use(morgan("common"));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// ----------- Session & Passport -----------
+// ✅ Session cookie settings
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "supersecret",
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URL,
-      collectionName: "sessions",
-    }),
     cookie: {
-      secure: isProduction, // ✅ HTTPS only in production
-      httpOnly: true,
-      sameSite: isProduction ? "none" : "lax", // ✅ 'none' for cross-site in production
+      httpOnly: true, // JS can't access the cookie
+      secure: process.env.NODE_ENV === "production", // Only HTTPS in prod
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Allow cross-site in prod
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
+// ✅ Example auth route
+app.get("/auth/me", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  res.json({ username: req.session.user.username });
+});
 
-// ----------- Routes -----------
-app.use("/general", generalRoutes);
-app.use("/client", clientRoutes);
-app.use("/sales", salesRoutes);
-app.use("/management", managementRoutes);
-app.use("/auth", authRoutes);
-
-// ----------- Global error handler -----------
-app.use(globalErrorHandler);
-
-// ----------- MongoDB connection & server start -----------
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("✅ Connected to MongoDB");
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error("❌ Error connecting to MongoDB:", err);
-  });
+export default app;
