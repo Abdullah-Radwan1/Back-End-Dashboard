@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import Link from "next/link";
 const NavBar = ({}: {}) => {
-  let { data: me } = useMeQuery(undefined);
+  const { data: me } = useMeQuery(undefined);
   const [logout, { isLoading }] = useLogoutMutation();
   const handleLogout = async () => {
     try {
