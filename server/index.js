@@ -9,7 +9,6 @@ import passport from "passport";
 import MongoStore from "connect-mongo";
 import rateLimit from "express-rate-limit";
 
-// import routes
 import generalRoutes from "./routes/general.js";
 import clientRoutes from "./routes/client.js";
 import salesRoutes from "./routes/sales.js";
@@ -22,11 +21,16 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+const isProduction = process.env.NODE_ENV === "production";
+
+// ✅ Needed for secure cookies behind reverse proxy (Heroku, Render, etc.)
+app.set("trust proxy", 1);
+
 // ----------- CORS configuration -----------
 app.use(
   cors({
-    origin: process.env.FRONT_END_URL, // must match frontend exactly (including https://)
-    credentials: true, // allow cookies
+    origin: process.env.FRONT_END_URL, // Must be EXACT URL (https://domain.com)
+    credentials: true, // Allow cookies
   })
 );
 
@@ -47,7 +51,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(helmet.referrerPolicy({ policy: "strict-origin-when-cross-origin" }));
 app.use(morgan("common"));
 
-// ----------- Session & Passport (BEFORE routes) -----------
+// ----------- Session & Passport -----------
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -58,9 +62,9 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
-      secure: true, //
+      secure: isProduction, // ✅ HTTPS only in production
       httpOnly: true,
-      sameSite: "none", // required for cross-site cookies
+      sameSite: isProduction ? "none" : "lax", // ✅ 'none' for cross-site in production
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
@@ -69,7 +73,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ----------- Routes (AFTER session setup) -----------
+// ----------- Routes -----------
 app.use("/general", generalRoutes);
 app.use("/client", clientRoutes);
 app.use("/sales", salesRoutes);
