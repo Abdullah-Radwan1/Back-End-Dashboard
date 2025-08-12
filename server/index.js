@@ -62,9 +62,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // ✅ Routes
+app.use("/general", generalRoutes);
+app.use("/client", clientRoutes);
+app.use("/sales", salesRoutes);
+app.use("/management", managementRoutes);
 app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/products", productRoutes);
 
 // ✅ Example route to test cookies
 app.get("/check-cookie", (req, res) => {
