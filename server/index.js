@@ -61,7 +61,7 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
-      secure: "production", // true in prod
+      secure: true, // true in prod
       httpOnly: true,
       sameSite: "none", // none for cross-site cookies
       maxAge: 1000 * 60 * 60 * 24,
