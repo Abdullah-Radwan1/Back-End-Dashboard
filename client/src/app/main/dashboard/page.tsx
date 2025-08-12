@@ -107,7 +107,7 @@ export default function Dashboard() {
                             {new Date(tx.createdAt).toLocaleDateString()}
                           </TableCell>
                           <TableCell>{tx.products.length}</TableCell>
-                          <TableCell className="text-right text-yellow">
+                          <TableCell className="text-right text-purple">
                             ${tx.cost}
                           </TableCell>
                         </TableRow>

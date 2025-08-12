@@ -5,8 +5,7 @@ import { Loader, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ModeToggle } from "../../../utils/mode-toggle";
-import { useLogoutMutation } from "../../../redux/API/api";
-import { useRouter } from "next/navigation";
+import { useLogoutMutation, useMeQuery } from "../../../redux/API/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,7 +17,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import Link from "next/link";
 const NavBar = ({}: {}) => {
+  let { data: me } = useMeQuery(undefined);
   const [logout, { isLoading }] = useLogoutMutation();
   const handleLogout = async () => {
     try {
@@ -42,6 +43,10 @@ const NavBar = ({}: {}) => {
       <div className="flex items-center gap-2">
         {isLoading ? (
           <Loader className="animate-spin" size={20} />
+        ) : !me ? (
+          <Button variant={"link"}>
+            <Link href={"/auth/login"}> Login</Link>
+          </Button>
         ) : (
           <AlertDialog>
             <AlertDialogTrigger asChild className="w-full">

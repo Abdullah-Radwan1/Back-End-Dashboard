@@ -30,17 +30,21 @@ export function AppSidebar() {
 
   const isActive = (path: string) => pathname === path;
   const { data: me, isLoading: userLoading } = useMeQuery(undefined);
-
-  console.log(me);
   return (
     <Sidebar className="h-full border-r ">
       <SidebarContent className="bg-background text-foreground">
         {/* Group: Main */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-md">
-            Welcome back,{"\u00A0"}
-            <p className="text-purple"> {me?.username || "can you wait ?"}!</p>
-          </SidebarGroupLabel>
+          {me ? (
+            <SidebarGroupLabel className="text-md">
+              Welcome back,{"\u00A0"}
+              <p className="text-purple">
+                {" "}
+                {me?.username || "can you wait ?"}!
+              </p>
+            </SidebarGroupLabel>
+          ) : null}
+
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
